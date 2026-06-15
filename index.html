@@ -146,7 +146,10 @@ html,body{
 </section>
 <div class="actions"><button class="top-btn" id="generateReport">Gerar lista do mês</button><button class="top-btn secondary" id="scrollAdd">+ Produto</button></div>
 <div class="report-panel" id="autoReport"><h2 id="autoReportTitle">Lista automática • Junho/2026</h2><div class="report-list" id="reportList"></div></div>
-<div class="search">⌕ buscar produto, categoria ou status</div>
+<div class="search">
+<input id="searchInput" type="text" placeholder="Buscar produto, categoria ou status"
+style="width:100%;background:transparent;border:0;outline:none;color:#fff;font-size:15px;">
+</div>
 <nav class="tabs"><button class="tab active" data-filter="todos">Todos</button><button class="tab" data-filter="em uso">Em uso</button><button class="tab" data-filter="estoque">Estoque</button></nav>
 <section class="content" id="list"></section>
 <button class="add" id="addBtn">+</button>
