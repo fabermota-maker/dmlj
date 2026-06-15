@@ -34,7 +34,9 @@ h1{font-size:27px;line-height:.95;margin:0;font-weight:900;letter-spacing:-1px}
 .report-panel.open{display:block}
 .report-panel h2{margin:0 0 8px;font-size:18px}
 .report-list{font-size:12.5px;color:var(--muted);line-height:1.65;max-height:220px;overflow:auto}
-.search{margin:16px 20px 0;background:rgba(255,255,255,.09);border:1px solid var(--line);border-radius:20px;padding:14px 18px;color:var(--muted);display:flex;gap:10px;backdrop-filter:blur(16px)}
+.search{margin:16px 20px 0;background:rgba(255,255,255,.09);border:1px solid var(--line);border-radius:20px;padding:0 16px;color:var(--muted);display:flex;align-items:center;gap:10px;backdrop-filter:blur(16px)}
+.search input{width:100%;border:0;outline:0;background:transparent;color:var(--ink);padding:14px 0;font-size:14px}
+.search input::placeholder{color:var(--muted)}
 .tabs{display:flex;gap:10px;padding:16px 20px 2px;position:sticky;top:108px;z-index:3;background:linear-gradient(180deg,rgba(30,21,58,.96),rgba(30,21,58,.72),transparent)}
 .tab{border:0;border-radius:999px;padding:10px 14px;background:rgba(255,255,255,.10);color:#fff;font-weight:750;flex:1}
 .tab.active{background:var(--teal);color:#102a2b;box-shadow:0 10px 25px rgba(39,201,183,.23)}
@@ -108,7 +110,7 @@ h1{font-size:27px;line-height:.95;margin:0;font-weight:900;letter-spacing:-1px}
 
 <div class="actions"><button class="top-btn" id="generateReport">Gerar lista do mês</button><button class="top-btn secondary" id="scrollAdd">+ Produto</button></div>
 <div class="report-panel" id="autoReport"><h2 id="autoReportTitle">Lista automática • Junho/2026</h2><div class="report-list" id="reportList"></div></div>
-<div class="search">⌕ buscar produto, categoria ou status</div>
+<div class="search">⌕ <input id="searchInput" type="search" placeholder="buscar produto, categoria ou status"></div>
 <nav class="tabs"><button class="tab active" data-filter="todos">Todos</button><button class="tab" data-filter="em uso">Em uso</button><button class="tab" data-filter="estoque">Estoque</button></nav>
 <section class="content" id="list"></section>
 <button class="add" id="addBtn">+</button>
@@ -136,6 +138,7 @@ let selectedYear = currentDate.getFullYear();
 let products = [];
 
 const list = document.getElementById('list');
+const searchInput = document.getElementById('searchInput');
 const modal=document.getElementById('modal');
 const addBtn=document.getElementById('addBtn');
 const scrollAdd=document.getElementById('scrollAdd');
@@ -148,40 +151,16 @@ const autoReportTitle=document.getElementById('autoReportTitle');
 
 function monthLabel(){return `${monthNames[selectedMonth]}/${selectedYear}`;}
 function monthKey(){return `journey-products-${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}`;}
-function historyKey(){return `journey-actions-${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}`;}
 function cloneProducts(list){return JSON.parse(JSON.stringify(list));}
 function sortedProducts(){
   return products.map((p,i)=>({...p,index:i})).sort((a,b)=>
     a.cat.localeCompare(b.cat,'pt-BR') || a.name.localeCompare(b.name,'pt-BR',{sensitivity:'base'})
   );
 }
-function storageGet(key, fallback){
-  try{const raw=localStorage.getItem(key);return raw?JSON.parse(raw):fallback;}catch(e){return fallback;}
-}
-function storageSet(key, value){
-  try{localStorage.setItem(key, JSON.stringify(value));return true;}catch(e){alert('Não foi possível salvar neste aparelho. Verifique se o navegador permite armazenamento local.');return false;}
-}
-function saveCurrentMonth(){storageSet(monthKey(), products);}
-function getHistory(){return storageGet(historyKey(), []);}
-function saveHistory(history){storageSet(historyKey(), history.slice(-300));}
-function logAction(type, product, amount=1){
-  const history=getHistory();
-  history.push({
-    type,
-    product:product.name,
-    category:product.cat,
-    unit:product.unit,
-    amount,
-    stockAfter:product.stock,
-    usedAfter:product.used,
-    date:new Date().toLocaleString('pt-BR')
-  });
-  saveHistory(history);
-}
+function saveCurrentMonth(){localStorage.setItem(monthKey(), JSON.stringify(products));}
 function loadMonth(){
-  const saved=storageGet(monthKey(), null);
-  products = saved || cloneProducts(baseProducts).map(p=>({...p, used:0}));
-  if(!saved) saveCurrentMonth();
+  const saved=localStorage.getItem(monthKey());
+  products = saved ? JSON.parse(saved) : cloneProducts(baseProducts).map(p=>({...p, used:0}));
   updateMonthLabels();
   syncCategoryOptions();
   render();
@@ -200,15 +179,32 @@ productCat.addEventListener('change',()=>newCatField.classList.toggle('hidden',p
 monthSelect.addEventListener('change',()=>{selectedMonth=Number(monthSelect.value);document.getElementById('autoReport').classList.remove('open');loadMonth();});
 
 function escHTML(v){return String(v).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
+function normalizeText(value){return String(value).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();}
 function iconFor(name){name=name.toLowerCase(); if(name.includes('papel'))return '🧻'; if(name.includes('lixo'))return '🗑️'; if(name.includes('álcool')||name.includes('cloro'))return '🧴'; if(name.includes('luva'))return '🧤'; if(name.includes('chá'))return '🍵'; if(name.includes('café'))return '☕'; if(name.includes('bala')||name.includes('açúcar'))return '🍬'; if(name.includes('bolacha'))return '🍪'; return '✨'}
 
 function render(){
   const active=document.querySelector('.tab.active').dataset.filter;
+  const query = normalizeText(document.getElementById('searchInput')?.value || '');
   const ordered = sortedProducts();
   const cats=[...new Set(ordered.map(p=>p.cat))];
   let html='';
   cats.forEach(cat=>{
-    const items=ordered.filter(p=>p.cat===cat).filter(p=>active==='todos'||(active==='em uso'&&p.used>0)||(active==='estoque'&&p.stock>0));
+    const items=ordered
+      .filter(p=>p.cat===cat)
+      .filter(p=>active==='todos'||(active==='em uso'&&p.used>0)||(active==='estoque'&&p.stock>0))
+      .filter(p=>{
+        if(!query) return true;
+        const terms = normalizeText([
+          p.name,
+          p.cat,
+          p.unit,
+          p.stock <= p.min ? 'baixo limite reposicao estoque minimo' : 'normal estoque ok',
+          p.used > 0 ? 'em uso utilizado' : 'estoque disponivel',
+          String(p.stock),
+          String(p.used)
+        ].join(' '));
+        return terms.includes(query);
+      });
     if(!items.length) return;
     html += `<h3 class="section-title">${escHTML(cat)}</h3>`;
     items.forEach(p=>{
@@ -246,24 +242,20 @@ function render(){
   list.innerHTML=html;
 }
 
-function useProduct(i){
-  if(products[i].stock>0){
-    products[i].stock--;
-    products[i].used++;
-    logAction('RETIRADA', products[i], 1);
-    saveCurrentMonth();
-    render();
-  }
-}
-function addStock(i){
-  products[i].stock++;
-  logAction('ENTRADA', products[i], 1);
-  saveCurrentMonth();
-  render();
-}
-
+function useProduct(i){ if(products[i].stock>0){products[i].stock--; products[i].used++; saveCurrentMonth(); render();} }
+function addStock(i){ products[i].stock++; saveCurrentMonth(); render(); }
 
 document.querySelectorAll('.tab').forEach(tab=>tab.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));tab.classList.add('active');render();}));
+
+function applySearch(){ render(); }
+if(searchInput){
+  searchInput.addEventListener('input', applySearch);
+  searchInput.addEventListener('search', applySearch);
+  searchInput.addEventListener('change', applySearch);
+  searchInput.addEventListener('keyup', (e)=>{
+    if(e.key === 'Backspace' || e.key === 'Delete') applySearch();
+  });
+}
 
 function ensureCategoryOption(cat){if(![...productCat.options].some(o=>o.value===cat||o.textContent===cat)){const opt=new Option(cat,cat);productCat.insertBefore(opt,productCat.querySelector('option[value="nova"]'));}}
 
@@ -275,10 +267,8 @@ document.getElementById('saveProduct').onclick=()=>{
   let cat=productCat.value==='nova'?document.getElementById('newCat').value.trim():productCat.value;
   if(!name||qty<0||!cat)return;
   ensureCategoryOption(cat);
-  const newProduct={cat,name,icon:iconFor(name),stock:qty,used:0,unit,min};
-  products.push(newProduct);
+  products.push({cat,name,icon:iconFor(name),stock:qty,used:0,unit,min});
   products.sort((a,b)=>a.cat.localeCompare(b.cat,'pt-BR') || a.name.localeCompare(b.name,'pt-BR',{sensitivity:'base'}));
-  logAction('NOVO PRODUTO', newProduct, qty);
   saveCurrentMonth();
   modal.classList.remove('open');
   document.getElementById('productName').value=''; document.getElementById('productQty').value=''; document.getElementById('productMin').value=''; document.getElementById('newCat').value='';
@@ -336,18 +326,9 @@ document.getElementById('generateReport').onclick=()=>{
     lines.push(`   Estoque minimo: ${p.min} ${p.unit}`);
     lines.push(`   Status: ${status}`);
   });
-  const history=getHistory();
-  lines.push('', 'HISTORICO DE ACOES DO MES');
-  if(history.length){
-    history.forEach((h,idx)=>{
-      lines.push(`${idx+1}. ${h.date} - ${h.type}: ${h.product} (${h.amount} ${h.unit}) | Estoque depois: ${h.stockAfter} | Utilizado depois: ${h.usedAfter}`);
-    });
-  }else{
-    lines.push('Nenhuma acao registrada neste mes.');
-  }
   const fileMonth=monthNames[selectedMonth].toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
   const blob=makePDF(lines);const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`lista-do-mes-${fileMonth}-${selectedYear}.pdf`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
-  document.getElementById('reportList').innerHTML=`PDF de <b>${label}</b> gerado com <b>${products.length}</b> produtos, saldo atualizado e histórico de entradas/retiradas do mês.`;
+  document.getElementById('reportList').innerHTML=`PDF de <b>${label}</b> gerado com <b>${products.length}</b> produtos em ordem alfabética dentro de cada categoria.`;
   document.getElementById('autoReport').classList.add('open');
 };
 

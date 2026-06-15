@@ -1,10 +1,33 @@
-# Journey Estoque
+const CACHE_NAME = 'dmlj-cache-v9-delete-pdf';
+const APP_FILES = [
+  './',
+  './index.html',
+  './manifest.json',
+  './icons/icon-192.png',
+  './icons/icon-512.png'
+];
 
-Versão com persistência local.
+self.addEventListener('install', (event) => {
+  self.skipWaiting();
+  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_FILES)));
+});
 
-- Entradas pelo botão `+` são salvas no aparelho.
-- Retiradas pelo botão `−` são salvas no aparelho.
-- Cada mês tem seu próprio controle.
-- O PDF inclui a lista do mês e o histórico de ações.
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))))
+      .then(() => self.clients.claim())
+  );
+});
 
-> Importante: os dados ficam salvos no localStorage do navegador/celular usado. Se abrir em outro celular, será uma base separada.
+self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
+  event.respondWith(
+    fetch(event.request)
+      .then(response => {
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
+        return response;
+      })
+      .catch(() => caches.match(event.request).then(cached => cached || caches.match('./index.html')))
+  );
+});
