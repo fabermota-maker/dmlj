@@ -161,7 +161,7 @@ style="width:100%;background:transparent;border:0;outline:none;color:#fff;font-s
 <div class="field"><label>Quantidade em estoque</label><input id="productQty" min="0" placeholder="Ex: 4" type="number"/></div>
 <div class="field"><label>Estoque mínimo</label><input id="productMin" min="0" placeholder="Ex: 2" type="number"/></div>
 <div class="field"><label>Unidade</label><select id="productUnit"><option>un.</option><option>pct.</option><option>cx.</option><option>kg</option><option>fardos</option><option>frascos</option></select></div>
-<div class="field"><label>Categoria</label><select id="productCat"><option>DML</option><option>Secretaria / Cozinha</option><option>Sala de Reunião</option><option value="nova">+ Adicionar nova categoria</option></select></div>
+<div class="field"><label>Categoria</label><select id="productCat"><option>Contra Turno</option><option>DML</option><option>Sala de Reunião</option><option>Secretaria / Cozinha</option><option value="nova">+ Adicionar nova categoria</option></select></div>
 <div class="field hidden" id="newCatField"><label>Nova categoria</label><input id="newCat" placeholder="Ex: Banheiros, Manutenção..."/></div>
 <button class="save" id="saveProduct">Salvar produto</button>
 </div>
@@ -170,29 +170,438 @@ style="width:100%;background:transparent;border:0;outline:none;color:#fff;font-s
 
 <script>
 const baseProducts = [
-  {cat:'DML',name:'Cloro Gel 1L',icon:'🧴',stock:8,used:2,unit:'un.',min:2},
-  {cat:'DML',name:'Bom Ar',icon:'🌬️',stock:1,used:0,unit:'un.',min:1},
-  {cat:'DML',name:'Koala',icon:'✨',stock:2,used:1,unit:'un.',min:2},
-  {cat:'DML',name:'Bom Ar Perfume para Banheiro',icon:'🚻',stock:2,used:1,unit:'frascos',min:2},
-  {cat:'DML',name:'Sabão em Pó',icon:'🫧',stock:1,used:0,unit:'kg',min:2},
-  {cat:'DML',name:'Papel Toalha',icon:'🧻',stock:4,used:2,unit:'fardos',min:4},
-  {cat:'DML',name:'Saco de Lixo 60L',icon:'🗑️',stock:1,used:0,unit:'pct.',min:1},
-  {cat:'DML',name:'Saco de Lixo 20L',icon:'🛍️',stock:2,used:1,unit:'pct.',min:2},
-  {cat:'DML',name:'Luva GG',icon:'🧤',stock:1,used:0,unit:'cx.',min:1},
-  {cat:'DML',name:'Luva M',icon:'🧤',stock:1,used:0,unit:'cx.',min:1},
-  {cat:'DML',name:'Sapólio',icon:'🧼',stock:1,used:0,unit:'un.',min:1},
-  {cat:'DML',name:'Difusores',icon:'🌿',stock:4,used:1,unit:'un.',min:2},
-  {cat:'DML',name:'Grampo de Roupa',icon:'📎',stock:1,used:0,unit:'pct.',min:1},
-  {cat:'DML',name:'Borrifadores',icon:'💦',stock:3,used:1,unit:'un.',min:1},
-  {cat:'DML',name:'Formikel Mata-Formigas',icon:'🐜',stock:1,used:0,unit:'un.',min:1},
-  {cat:'DML',name:'Copos Descartáveis',icon:'🥤',stock:1,used:0,unit:'cx.',min:1},
-  {cat:'DML',name:'Álcool Gel',icon:'🧴',stock:1,used:0,unit:'un.',min:1},
-  {cat:'Secretaria / Cozinha',name:'Chá de Erva-Cidreira',icon:'🍵',stock:10,used:3,unit:'cx.',min:3},
-  {cat:'Secretaria / Cozinha',name:'Chá de Camomila',icon:'🍵',stock:10,used:2,unit:'cx.',min:3},
-  {cat:'Secretaria / Cozinha',name:'Açúcar',icon:'🍬',stock:5,used:1,unit:'kg',min:2},
-  {cat:'Secretaria / Cozinha',name:'Filtro de Café',icon:'☕',stock:1,used:0,unit:'cx.',min:1},
-  {cat:'Sala de Reunião',name:'Balas',icon:'🍬',stock:2,used:1,unit:'pct.',min:2},
-  {cat:'Sala de Reunião',name:'Bolachas',icon:'🍪',stock:1,used:0,unit:'pct.',min:1}
+  {
+    "cat": "Contra Turno",
+    "name": "Batata palha 1kg",
+    "icon": "🥔",
+    "stock": 2,
+    "used": 0,
+    "unit": "pct.",
+    "min": 1
+  },
+  {
+    "cat": "Contra Turno",
+    "name": "Farofa 1kg",
+    "icon": "🥣",
+    "stock": 2,
+    "used": 0,
+    "unit": "un.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Esponja de louça",
+    "icon": "🧽",
+    "stock": 16,
+    "used": 0,
+    "unit": "un.",
+    "min": 4
+  },
+  {
+    "cat": "DML",
+    "name": "Álcool 70",
+    "icon": "🧴",
+    "stock": 12,
+    "used": 0,
+    "unit": "un.",
+    "min": 3
+  },
+  {
+    "cat": "DML",
+    "name": "Álcool Gel 12L",
+    "icon": "🧴",
+    "stock": 2,
+    "used": 0,
+    "unit": "cx.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Bom Ar perfume para banheiro",
+    "icon": "🚻",
+    "stock": 4,
+    "used": 0,
+    "unit": "un.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Borrifador",
+    "icon": "💦",
+    "stock": 3,
+    "used": 0,
+    "unit": "un.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Bucha Moop",
+    "icon": "🧽",
+    "stock": 2,
+    "used": 0,
+    "unit": "un.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Cabelo Moop",
+    "icon": "🧹",
+    "stock": 10,
+    "used": 0,
+    "unit": "un.",
+    "min": 2
+  },
+  {
+    "cat": "DML",
+    "name": "Cloro Gel 1L",
+    "icon": "🧴",
+    "stock": 8,
+    "used": 0,
+    "unit": "un.",
+    "min": 2
+  },
+  {
+    "cat": "DML",
+    "name": "Copos descartáveis 100 unid.",
+    "icon": "🥤",
+    "stock": 100,
+    "used": 0,
+    "unit": "un.",
+    "min": 20
+  },
+  {
+    "cat": "DML",
+    "name": "Desentupidor de banheiro",
+    "icon": "🚽",
+    "stock": 2,
+    "used": 0,
+    "unit": "un.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Desinfetante 5L",
+    "icon": "🧴",
+    "stock": 4,
+    "used": 0,
+    "unit": "un.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Detergente 5L",
+    "icon": "🫧",
+    "stock": 4,
+    "used": 0,
+    "unit": "un.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Difusores",
+    "icon": "🌿",
+    "stock": 5,
+    "used": 0,
+    "unit": "un.",
+    "min": 2
+  },
+  {
+    "cat": "DML",
+    "name": "Formikel Mata-Formigas",
+    "icon": "🐜",
+    "stock": 2,
+    "used": 0,
+    "unit": "cx.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Grampo de roupa (1 dúzia)",
+    "icon": "📎",
+    "stock": 2,
+    "used": 0,
+    "unit": "un.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Koala Sol Brasil",
+    "icon": "✨",
+    "stock": 6,
+    "used": 0,
+    "unit": "un.",
+    "min": 2
+  },
+  {
+    "cat": "DML",
+    "name": "Limpa Tudo FE 5L",
+    "icon": "🧼",
+    "stock": 2,
+    "used": 0,
+    "unit": "un.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Luva G",
+    "icon": "🧤",
+    "stock": 2,
+    "used": 0,
+    "unit": "cx.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Luva GG",
+    "icon": "🧤",
+    "stock": 1,
+    "used": 0,
+    "unit": "cx.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Luva M (100 unid.)",
+    "icon": "🧤",
+    "stock": 2,
+    "used": 0,
+    "unit": "cx.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Pá de lixo",
+    "icon": "🗑️",
+    "stock": 5,
+    "used": 0,
+    "unit": "un.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Pano de chão xadrez",
+    "icon": "🧻",
+    "stock": 15,
+    "used": 0,
+    "unit": "un.",
+    "min": 4
+  },
+  {
+    "cat": "DML",
+    "name": "Pano de microfibra",
+    "icon": "🧻",
+    "stock": 10,
+    "used": 0,
+    "unit": "un.",
+    "min": 3
+  },
+  {
+    "cat": "DML",
+    "name": "Papel higiênico/aluno",
+    "icon": "🧻",
+    "stock": 10,
+    "used": 0,
+    "unit": "fardos",
+    "min": 3
+  },
+  {
+    "cat": "DML",
+    "name": "Papel higiênico/ADM",
+    "icon": "🧻",
+    "stock": 5,
+    "used": 0,
+    "unit": "pct.",
+    "min": 2
+  },
+  {
+    "cat": "DML",
+    "name": "Papel toalha",
+    "icon": "🧻",
+    "stock": 15,
+    "used": 0,
+    "unit": "fardos",
+    "min": 4
+  },
+  {
+    "cat": "DML",
+    "name": "Passador de cera amarelo",
+    "icon": "🧹",
+    "stock": 2,
+    "used": 0,
+    "unit": "un.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Rastelo",
+    "icon": "🧹",
+    "stock": 2,
+    "used": 0,
+    "unit": "un.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Rodo de limpeza",
+    "icon": "🧹",
+    "stock": 5,
+    "used": 0,
+    "unit": "un.",
+    "min": 2
+  },
+  {
+    "cat": "DML",
+    "name": "Sabão em pó 1kg",
+    "icon": "🫧",
+    "stock": 2,
+    "used": 0,
+    "unit": "cx.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Sabonete líquido 5L",
+    "icon": "🧴",
+    "stock": 3,
+    "used": 0,
+    "unit": "un.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Saco de lixo 120L",
+    "icon": "🗑️",
+    "stock": 2,
+    "used": 0,
+    "unit": "pct.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Saco de lixo 20L",
+    "icon": "🛍️",
+    "stock": 2,
+    "used": 0,
+    "unit": "un.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Saco de lixo 60L",
+    "icon": "🗑️",
+    "stock": 2,
+    "used": 0,
+    "unit": "pct.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Sapólio",
+    "icon": "🧼",
+    "stock": 4,
+    "used": 0,
+    "unit": "un.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Vassoura",
+    "icon": "🧹",
+    "stock": 5,
+    "used": 0,
+    "unit": "un.",
+    "min": 2
+  },
+  {
+    "cat": "Sala de Reunião",
+    "name": "Água copo",
+    "icon": "💧",
+    "stock": 24,
+    "used": 0,
+    "unit": "un.",
+    "min": 6
+  },
+  {
+    "cat": "Sala de Reunião",
+    "name": "Balas",
+    "icon": "🍬",
+    "stock": 2,
+    "used": 0,
+    "unit": "pct.",
+    "min": 1
+  },
+  {
+    "cat": "Sala de Reunião",
+    "name": "Bolachas",
+    "icon": "🍪",
+    "stock": 1,
+    "used": 0,
+    "unit": "pct.",
+    "min": 1
+  },
+  {
+    "cat": "Secretaria / Cozinha",
+    "name": "Açúcar 5kg",
+    "icon": "🍬",
+    "stock": 2,
+    "used": 0,
+    "unit": "pct.",
+    "min": 1
+  },
+  {
+    "cat": "Secretaria / Cozinha",
+    "name": "Balas (50 unid.)",
+    "icon": "🍬",
+    "stock": 2,
+    "used": 0,
+    "unit": "pct.",
+    "min": 1
+  },
+  {
+    "cat": "Secretaria / Cozinha",
+    "name": "Bolacha (12 unid.)",
+    "icon": "🍪",
+    "stock": 2,
+    "used": 0,
+    "unit": "pct.",
+    "min": 1
+  },
+  {
+    "cat": "Secretaria / Cozinha",
+    "name": "Chá de boldo",
+    "icon": "🍵",
+    "stock": 2,
+    "used": 0,
+    "unit": "cx.",
+    "min": 1
+  },
+  {
+    "cat": "Secretaria / Cozinha",
+    "name": "Chá de camomila",
+    "icon": "🍵",
+    "stock": 10,
+    "used": 0,
+    "unit": "cx.",
+    "min": 3
+  },
+  {
+    "cat": "Secretaria / Cozinha",
+    "name": "Chá de erva-cidreira",
+    "icon": "🍵",
+    "stock": 10,
+    "used": 0,
+    "unit": "cx.",
+    "min": 3
+  },
+  {
+    "cat": "Secretaria / Cozinha",
+    "name": "Filtro de café",
+    "icon": "☕",
+    "stock": 36,
+    "used": 0,
+    "unit": "cx.",
+    "min": 8
+  }
 ];
 
 const monthNames=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
