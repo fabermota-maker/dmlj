@@ -650,6 +650,20 @@ html,body{
   }
 }
 
+
+/* ===== Dashboard editável com estoque ideal ===== */
+.top-report-grid.dashboard-five,.dashboard-five{grid-template-columns:repeat(5,1fr)!important;gap:3px!important}
+.top-stat{border:0;cursor:pointer;font-family:inherit}
+.top-stat.blue{border:2px solid #7bd7ff!important}
+.top-stat.buy{border:2px solid #ffb84d!important}
+@media(max-width:430px){
+  .top-report-grid.dashboard-five,.dashboard-five{grid-template-columns:repeat(5,1fr)!important;gap:3px!important;margin-bottom:6px!important}
+  .top-stat{height:38px!important;border-radius:10px!important;font-size:6.2px!important;padding:1px!important}
+  .top-stat b{font-size:11px!important;line-height:1!important}
+  .top-stat span{font-size:6px!important;line-height:1!important}
+  .top-stat.green,.top-stat.red,.top-stat.yellow,.top-stat.blue,.top-stat.buy{border-width:1.5px!important}
+}
+
 </style>
 </head>
 <body>
@@ -669,10 +683,12 @@ html,body{
 
       <div class="report-top">
         <div class="top-report-title">Relatório mensal</div>
-        <div class="top-report-grid">
-          <div class="top-stat green"><b id="topTotalProducts">0</b><span>produtos</span></div>
-          <div class="top-stat red"><b id="topTotalMonth">0</b><span>total mês</span></div>
-          <div class="top-stat yellow"><b id="topTotalUsed">0</b><span>utilizados</span></div>
+        <div class="top-report-grid dashboard-five">
+          <button class="top-stat green" onclick="editDashboardNumber('products')"><b id="topTotalProducts">0</b><span>produtos</span></button>
+          <button class="top-stat blue" onclick="editDashboardNumber('stock')"><b id="topTotalStock">0</b><span>em estoque</span></button>
+          <button class="top-stat yellow" onclick="editDashboardNumber('used')"><b id="topTotalUsed">0</b><span>utilizados</span></button>
+          <button class="top-stat red" onclick="editDashboardNumber('low')"><b id="topLowStock">0</b><span>críticos</span></button>
+          <button class="top-stat buy" onclick="editDashboardNumber('buy')"><b id="topBuyNeeded">0</b><span>comprar</span></button>
         </div>
         <div class="download-row">
           <button class="top-btn" id="generateReport">Baixar lista mês</button><button class="top-btn consumption-btn" id="showConsumption">Consumo</button>
@@ -709,6 +725,7 @@ html,body{
 <div class="field"><label>Nome do produto</label><input id="productName" placeholder="Ex: Desinfetante 5L"/></div>
 <div class="field"><label>Quantidade em estoque</label><input id="productQty" min="0" placeholder="Ex: 4" type="number"/></div>
 <div class="field"><label>Estoque mínimo</label><input id="productMin" min="0" placeholder="Ex: 2" type="number"/></div>
+<div class="field"><label>Estoque ideal</label><input id="productIdeal" min="0" placeholder="Ex: 4" type="number"/></div>
 <div class="field"><label>Unidade</label><select id="productUnit"><option>un.</option><option>pct.</option><option>cx.</option><option>kg</option><option>fardos</option><option>frascos</option></select></div>
 <div class="field"><label>Categoria</label><select id="productCat"><option>DML</option><option>Sala de Reunião</option><option>Secretaria / Cozinha</option><option value="nova">+ Adicionar nova categoria</option></select></div>
 <div class="field hidden" id="newCatField"><label>Nova categoria</label><input id="newCat" placeholder="Ex: Banheiros, Manutenção..."/></div>
@@ -725,7 +742,7 @@ html,body{
       <button class="consumption-print" id="printConsumption">Imprimir PDF</button><button class="consumption-close" id="closeConsumption">×</button>
     </div>
     <div class="consumption-info">
-      Comparativo do mês anterior com o mês selecionado. Referência usada: manter sempre <b>4 unidades</b> em estoque por produto.
+      Comparativo do mês anterior com o mês selecionado. A compra é calculada para voltar ao <b>estoque ideal</b> definido em cada produto.
     </div>
     <div id="consumptionList"></div>
   </div>
@@ -740,7 +757,8 @@ const baseProducts = [
     "stock": 20,
     "used": 0,
     "unit": "litros",
-    "min": 4
+    "min": 4,
+    "ideal": 20
   },
   {
     "cat": "DML",
@@ -749,7 +767,8 @@ const baseProducts = [
     "stock": 1,
     "used": 0,
     "unit": "un.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -758,7 +777,8 @@ const baseProducts = [
     "stock": 6,
     "used": 0,
     "unit": "un.",
-    "min": 2
+    "min": 2,
+    "ideal": 6
   },
   {
     "cat": "DML",
@@ -767,7 +787,8 @@ const baseProducts = [
     "stock": 2,
     "used": 0,
     "unit": "frascos",
-    "min": 2
+    "min": 2,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -776,7 +797,8 @@ const baseProducts = [
     "stock": 1,
     "used": 0,
     "unit": "pct.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -785,7 +807,8 @@ const baseProducts = [
     "stock": 3,
     "used": 0,
     "unit": "un.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -794,7 +817,8 @@ const baseProducts = [
     "stock": 5,
     "used": 0,
     "unit": "un.",
-    "min": 2
+    "min": 2,
+    "ideal": 5
   },
   {
     "cat": "DML",
@@ -803,7 +827,8 @@ const baseProducts = [
     "stock": 18,
     "used": 0,
     "unit": "un.",
-    "min": 4
+    "min": 4,
+    "ideal": 18
   },
   {
     "cat": "DML",
@@ -812,7 +837,8 @@ const baseProducts = [
     "stock": 3,
     "used": 0,
     "unit": "litros",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -821,7 +847,8 @@ const baseProducts = [
     "stock": 19,
     "used": 6,
     "unit": "un.",
-    "min": 2
+    "min": 2,
+    "ideal": 25
   },
   {
     "cat": "DML",
@@ -830,7 +857,8 @@ const baseProducts = [
     "stock": 1,
     "used": 0,
     "unit": "cx.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -839,7 +867,8 @@ const baseProducts = [
     "stock": 2,
     "used": 0,
     "unit": "un.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -848,7 +877,8 @@ const baseProducts = [
     "stock": 4,
     "used": 0,
     "unit": "un.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -857,7 +887,8 @@ const baseProducts = [
     "stock": 1,
     "used": 0,
     "unit": "un.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -866,7 +897,8 @@ const baseProducts = [
     "stock": 2,
     "used": 0,
     "unit": "un.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -875,7 +907,8 @@ const baseProducts = [
     "stock": 2,
     "used": 0,
     "unit": "pct.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -884,7 +917,8 @@ const baseProducts = [
     "stock": 1,
     "used": 0,
     "unit": "un.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -893,7 +927,8 @@ const baseProducts = [
     "stock": 2,
     "used": 0,
     "unit": "un.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -902,7 +937,8 @@ const baseProducts = [
     "stock": 1,
     "used": 0,
     "unit": "pct.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -911,7 +947,8 @@ const baseProducts = [
     "stock": 6,
     "used": 4,
     "unit": "un.",
-    "min": 2
+    "min": 2,
+    "ideal": 10
   },
   {
     "cat": "DML",
@@ -920,7 +957,8 @@ const baseProducts = [
     "stock": 1,
     "used": 0,
     "unit": "cx.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -929,7 +967,8 @@ const baseProducts = [
     "stock": 1,
     "used": 0,
     "unit": "cx.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -938,7 +977,8 @@ const baseProducts = [
     "stock": 1,
     "used": 0,
     "unit": "cx.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -947,7 +987,8 @@ const baseProducts = [
     "stock": 15,
     "used": 0,
     "unit": "un.",
-    "min": 4
+    "min": 4,
+    "ideal": 15
   },
   {
     "cat": "DML",
@@ -956,7 +997,8 @@ const baseProducts = [
     "stock": 15,
     "used": 2,
     "unit": "fardos",
-    "min": 4
+    "min": 4,
+    "ideal": 17
   },
   {
     "cat": "DML",
@@ -965,7 +1007,8 @@ const baseProducts = [
     "stock": 1,
     "used": 0,
     "unit": "rolo",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -974,7 +1017,8 @@ const baseProducts = [
     "stock": 1,
     "used": 0,
     "unit": "kg",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -983,7 +1027,8 @@ const baseProducts = [
     "stock": 1,
     "used": 0,
     "unit": "un.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -992,7 +1037,8 @@ const baseProducts = [
     "stock": 2,
     "used": 0,
     "unit": "pct.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -1001,7 +1047,8 @@ const baseProducts = [
     "stock": 2,
     "used": 6,
     "unit": "pct.",
-    "min": 2
+    "min": 2,
+    "ideal": 8
   },
   {
     "cat": "DML",
@@ -1010,7 +1057,8 @@ const baseProducts = [
     "stock": 2,
     "used": 0,
     "unit": "pct.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -1019,7 +1067,8 @@ const baseProducts = [
     "stock": 2,
     "used": 1,
     "unit": "un.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -1028,7 +1077,8 @@ const baseProducts = [
     "stock": 2,
     "used": 0,
     "unit": "un.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -1037,7 +1087,8 @@ const baseProducts = [
     "stock": 1,
     "used": 0,
     "unit": "un.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -1046,7 +1097,8 @@ const baseProducts = [
     "stock": 3,
     "used": 0,
     "unit": "un.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "Sala de Reunião",
@@ -1055,7 +1107,8 @@ const baseProducts = [
     "stock": 2,
     "used": 0,
     "unit": "pct.",
-    "min": 2
+    "min": 2,
+    "ideal": 4
   },
   {
     "cat": "Sala de Reunião",
@@ -1064,7 +1117,8 @@ const baseProducts = [
     "stock": 1,
     "used": 0,
     "unit": "pct.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "Secretaria / Cozinha",
@@ -1073,7 +1127,8 @@ const baseProducts = [
     "stock": 5,
     "used": 0,
     "unit": "kg",
-    "min": 1
+    "min": 1,
+    "ideal": 5
   },
   {
     "cat": "Secretaria / Cozinha",
@@ -1082,7 +1137,8 @@ const baseProducts = [
     "stock": 10,
     "used": 0,
     "unit": "cx.",
-    "min": 3
+    "min": 3,
+    "ideal": 10
   },
   {
     "cat": "Secretaria / Cozinha",
@@ -1091,7 +1147,8 @@ const baseProducts = [
     "stock": 10,
     "used": 0,
     "unit": "cx.",
-    "min": 3
+    "min": 3,
+    "ideal": 10
   },
   {
     "cat": "Secretaria / Cozinha",
@@ -1100,7 +1157,8 @@ const baseProducts = [
     "stock": 1,
     "used": 0,
     "unit": "cx.",
-    "min": 1
+    "min": 1,
+    "ideal": 4
   }
 ];
 
@@ -1185,16 +1243,40 @@ function iconFor(name){
   return '✨';
 }
 
+function dashboardOverrideKey(){return `journey-dashboard-overrides-${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}`;}
+function getDashboardOverrides(){return storageGet(dashboardOverrideKey(),{});}
+function setDashboardOverride(key,value){const data=getDashboardOverrides();if(value===''||value===null){delete data[key];}else{data[key]=Number(value);}storageSet(dashboardOverrideKey(),data);}
+function valueWithOverride(key,autoValue){const data=getDashboardOverrides();return Object.prototype.hasOwnProperty.call(data,key)?data[key]:autoValue;}
+window.editDashboardNumber=function(key){
+  const labels={products:'produtos',stock:'em estoque',used:'utilizados',low:'críticos',buy:'comprar'};
+  const current=document.querySelector(`[onclick="editDashboardNumber('${key}')"] b`)?.textContent || '';
+  const value=prompt(`Editar indicador: ${labels[key]}
+
+Digite um número manual ou deixe vazio para voltar ao cálculo automático.`, current);
+  if(value===null)return;
+  const clean=value.trim();
+  if(clean===''){setDashboardOverride(key,'');render();return;}
+  const num=parseInt(clean,10);
+  if(Number.isNaN(num)){alert('Digite apenas números.');return;}
+  setDashboardOverride(key,num);render();
+};
+function idealForProduct(p){return Number(p.ideal || (Number(p.stock||0)+Number(p.used||0)) || p.min || 4);}
 function updateTopStats(){
   const total=products.length;
-  const totalMes=products.reduce((s,p)=>s+p.stock+p.used,0);
-  const used=products.reduce((s,p)=>s+p.used,0);
+  const stock=products.reduce((s,p)=>s+Number(p.stock||0),0);
+  const used=products.reduce((s,p)=>s+Number(p.used||0),0);
+  const low=products.filter(p=>Number(p.stock||0)<=Number(p.min||0)).length;
+  const buyNeeded=products.reduce((s,p)=>s+Math.max(0,idealForProduct(p)-Number(p.stock||0)),0);
   const a=document.getElementById('topTotalProducts');
-  const b=document.getElementById('topTotalMonth');
+  const b=document.getElementById('topTotalStock');
   const c=document.getElementById('topTotalUsed');
-  if(a)a.textContent=total;
-  if(b)b.textContent=totalMes;
-  if(c)c.textContent=used;
+  const d=document.getElementById('topLowStock');
+  const e=document.getElementById('topBuyNeeded');
+  if(a)a.textContent=valueWithOverride('products',total);
+  if(b)b.textContent=valueWithOverride('stock',stock);
+  if(c)c.textContent=valueWithOverride('used',used);
+  if(d)d.textContent=valueWithOverride('low',low);
+  if(e)e.textContent=valueWithOverride('buy',buyNeeded);
 }
 
 function render(){
@@ -1220,7 +1302,7 @@ function render(){
       const tagText=p.used>0?'Em uso':'Em estoque';
       html+=`<article class="card ${low?'low':''}" data-index="${p.index}">
         <div class="icon-wrap"><div class="icon">${p.icon||iconFor(p.name)}</div><div class="ctrls"><button class="minus" onclick="useProduct(${p.index})">−</button><button class="plus" onclick="addStock(${p.index})">+</button></div><button class="edit-product" onclick="editProduct(${p.index})">edit</button></div>
-        <div><div class="name-row"><div><div class="name">${escHTML(p.name)}</div><div class="meta">Entrada: ${monthLabel()}<br>Categoria: ${escHTML(p.cat)}<br>Estoque mínimo: ${p.min} ${escHTML(p.unit)}</div></div><div class="card-actions"><span class="tag ${tagClass}">${tagText}</span><button class="delete-product" onclick="deleteProduct(${p.index})" aria-label="Excluir ${escHTML(p.name)}">×</button></div></div>
+        <div><div class="name-row"><div><div class="name">${escHTML(p.name)}</div><div class="meta">Entrada: ${monthLabel()}<br>Categoria: ${escHTML(p.cat)}<br>Estoque mínimo: ${p.min} ${escHTML(p.unit)}<br>Estoque ideal: ${idealForProduct(p)} ${escHTML(p.unit)}</div></div><div class="card-actions"><span class="tag ${tagClass}">${tagText}</span><button class="delete-product" onclick="deleteProduct(${p.index})" aria-label="Excluir ${escHTML(p.name)}">×</button></div></div>
         <div class="stock"><div class="box stock-now"><small>Em estoque</small><b>${p.stock}</b> ${escHTML(p.unit)}</div><div class="box used"><small>Utilizados</small><b>${p.used}</b> ${escHTML(p.unit)}</div></div>
         <div class="bar"><div class="fill" style="width:${percent}%"></div></div><div class="meta">Saldo visual: ${p.stock} ${escHTML(p.unit)}</div><div class="alert">⚠ Estoque baixo! Reposição necessária.</div></div></article>`;
     });
@@ -1259,6 +1341,7 @@ window.editProduct=function(i){
   document.getElementById('productName').value=product.name;
   document.getElementById('productQty').value=product.stock;
   document.getElementById('productMin').value=product.min;
+  document.getElementById('productIdeal').value=product.ideal || (Number(product.stock||0)+Number(product.used||0)) || 4;
   document.getElementById('productUnit').value=product.unit;
   ensureCategoryOption(product.cat);
   productCat.value=product.cat;
@@ -1271,7 +1354,7 @@ function resetProductForm(){
   editIndex=null;
   document.getElementById('modalTitle').textContent='Adicionar produto';
   document.getElementById('saveProduct').textContent='Salvar produto';
-  ['productName','productQty','productMin','newCat'].forEach(id=>document.getElementById(id).value='');
+  ['productName','productQty','productMin','productIdeal','newCat'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('productUnit').value='un.';
   productCat.value='DML';
   newCatField.classList.add('hidden');
@@ -1290,6 +1373,7 @@ document.getElementById('saveProduct').onclick=()=>{
   const name=document.getElementById('productName').value.trim();
   const qty=parseInt(document.getElementById('productQty').value||'0',10);
   const min=parseInt(document.getElementById('productMin').value||'1',10);
+  const ideal=parseInt(document.getElementById('productIdeal')?.value||String(Math.max(qty,min,4)),10);
   const unit=document.getElementById('productUnit').value;
   let cat=productCat.value==='nova'?document.getElementById('newCat').value.trim():productCat.value;
   if(!name||qty<0||!cat)return;
@@ -1297,10 +1381,10 @@ document.getElementById('saveProduct').onclick=()=>{
 
   if(editIndex!==null && products[editIndex]){
     const current=products[editIndex];
-    products[editIndex]={...current,cat,name,stock:qty,unit,min,icon:current.icon||iconFor(name)};
+    products[editIndex]={...current,cat,name,stock:qty,unit,min,ideal,icon:current.icon||iconFor(name)};
     logAction('EDICAO',products[editIndex],qty);
   }else{
-    const newProduct={cat,name,icon:iconFor(name),stock:qty,used:0,unit,min};
+    const newProduct={cat,name,icon:iconFor(name),stock:qty,used:0,unit,min,ideal};
     products.push(newProduct);
     logAction('NOVO PRODUTO',newProduct,qty);
   }
@@ -1398,9 +1482,8 @@ function previousMonthData(){
   return {month:m,year:y,label:`${monthNames[m]}/${y}`,products:saved || []};
 }
 function consumptionNeed(product){
-  const ideal=4;
-  const used=Number(product?.used || 0);
-  return Math.max(0, used);
+  if(!product) return 0;
+  return Math.max(0, idealForProduct(product)-Number(product.stock||0));
 }
 function renderConsumptionReport(){
   const prev=previousMonthData();
@@ -1419,8 +1502,8 @@ function renderConsumptionReport(){
       const currentBuy=consumptionNeed(p);
       html+=`<div class="consumption-item">
         <b>${p.icon||iconFor(p.name)} ${escHTML(p.name)}</b>
-        <div class="consumption-line">${prev.label}: Estoque ideal: 4 ${escHTML(prevP.unit||p.unit)} | usou: ${prevP.used||0} ${escHTML(prevP.unit||p.unit)} | <span class="consumption-buy">Comprar: ${prevBuy} ${escHTML(prevP.unit||p.unit)}</span></div>
-        <div class="consumption-line">${currentLabel}: Estoque ideal: 4 ${escHTML(p.unit)} | usou: ${p.used||0} ${escHTML(p.unit)} | <span class="consumption-buy">Comprar: ${currentBuy} ${escHTML(p.unit)}</span></div>
+        <div class="consumption-line">${prev.label}: Estoque ideal: ${idealForProduct(prevP)} ${escHTML(prevP.unit||p.unit)} | estoque: ${prevP.stock||0} ${escHTML(prevP.unit||p.unit)} | usou: ${prevP.used||0} ${escHTML(prevP.unit||p.unit)} | <span class="consumption-buy">Comprar: ${prevBuy} ${escHTML(prevP.unit||p.unit)}</span></div>
+        <div class="consumption-line">${currentLabel}: Estoque ideal: ${idealForProduct(p)} ${escHTML(p.unit)} | estoque: ${p.stock||0} ${escHTML(p.unit)} | usou: ${p.used||0} ${escHTML(p.unit)} | <span class="consumption-buy">Comprar: ${currentBuy} ${escHTML(p.unit)}</span></div>
       </div>`;
     });
   });
