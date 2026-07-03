@@ -182,6 +182,302 @@ html,body{
   .top-inner{width:346px!important;max-width:calc(100vw - 16px)!important}
 }
 
+
+/* ===== Botão e lista de consumo mensal ===== */
+.download-row{
+  grid-template-columns:1fr 74px 84px!important;
+}
+.consumption-btn{
+  background:rgba(255,255,255,.10)!important;
+  color:#fff!important;
+  border:1px solid rgba(255,255,255,.16)!important;
+  box-shadow:none!important;
+}
+.consumption-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(10,6,24,.72);
+  backdrop-filter:blur(16px);
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+  z-index:40;
+}
+.consumption-modal.open{display:flex}
+.consumption-sheet{
+  width:min(430px,100%);
+  max-height:82dvh;
+  overflow:auto;
+  background:linear-gradient(180deg,rgba(72,51,126,.98),rgba(25,18,51,.98));
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:30px 30px 0 0;
+  padding:18px 18px 24px;
+  box-shadow:0 -26px 80px rgba(0,0,0,.38);
+}
+.consumption-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
+}
+.consumption-head h2{
+  margin:0;
+  font-size:21px;
+}
+.consumption-close{
+  border:0;
+  background:rgba(255,255,255,.12);
+  color:white;
+  width:38px;
+  height:38px;
+  border-radius:14px;
+  font-size:22px;
+}
+.consumption-info{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.45;
+  margin-bottom:14px;
+}
+.consumption-category{
+  color:var(--yellow);
+  font-weight:900;
+  font-size:13px;
+  margin:18px 0 8px;
+  text-transform:uppercase;
+}
+.consumption-item{
+  background:rgba(255,255,255,.08);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:12px;
+  margin:8px 0;
+}
+.consumption-item b{
+  display:block;
+  font-size:14px;
+  margin-bottom:7px;
+}
+.consumption-line{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.45;
+}
+.consumption-buy{
+  color:var(--yellow);
+  font-weight:900;
+}
+@media(max-width:430px){
+  .download-row{
+    grid-template-columns:1fr 66px 78px!important;
+    gap:5px!important;
+  }
+  .download-row .consumption-btn{
+    font-size:9px!important;
+    padding:0 4px!important;
+  }
+}
+
+
+/* ===== Impressão / PDF da janela de consumo ===== */
+.consumption-head{
+  align-items:flex-start!important;
+}
+.consumption-print{
+  border:0;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--yellow),#f8f5a1);
+  color:#201241;
+  font-weight:900;
+  padding:11px 13px;
+  font-size:12px;
+  white-space:nowrap;
+  cursor:pointer;
+}
+@media(max-width:430px){
+  .consumption-print{
+    font-size:11px;
+    padding:10px 11px;
+  }
+}
+@media print{
+  body *{
+    visibility:hidden!important;
+  }
+  #consumptionModal,
+  #consumptionModal *{
+    visibility:visible!important;
+  }
+  #consumptionModal{
+    position:absolute!important;
+    inset:0!important;
+    display:block!important;
+    background:#fff!important;
+    color:#111!important;
+    backdrop-filter:none!important;
+  }
+  .consumption-sheet{
+    width:100%!important;
+    max-height:none!important;
+    overflow:visible!important;
+    background:#fff!important;
+    color:#111!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+    padding:24px!important;
+  }
+  .consumption-head{
+    border-bottom:1px solid #ddd!important;
+    padding-bottom:12px!important;
+    margin-bottom:16px!important;
+  }
+  .consumption-head h2{
+    color:#111!important;
+    font-size:22px!important;
+  }
+  .consumption-close,
+  .consumption-print{
+    display:none!important;
+  }
+  .consumption-info,
+  .consumption-line{
+    color:#333!important;
+  }
+  .consumption-category{
+    color:#111!important;
+    border-bottom:1px solid #ddd!important;
+    padding-bottom:4px!important;
+    page-break-after:avoid!important;
+  }
+  .consumption-item{
+    background:#fff!important;
+    border:1px solid #ddd!important;
+    color:#111!important;
+    page-break-inside:avoid!important;
+  }
+  .consumption-buy{
+    color:#111!important;
+    font-weight:900!important;
+  }
+}
+
+
+/* ===== Correção de largura do topo: sem cortes laterais no celular ===== */
+@media(max-width:430px){
+  .top{
+    width:100%!important;
+    padding-left:8px!important;
+    padding-right:8px!important;
+    overflow:hidden!important;
+  }
+
+  .top-inner{
+    width:100%!important;
+    max-width:346px!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    overflow:hidden!important;
+  }
+
+  .top-main{
+    grid-template-columns:128px minmax(0,1fr)!important;
+    gap:5px!important;
+  }
+
+  .report-top{
+    min-width:0!important;
+    overflow:hidden!important;
+  }
+
+  .top-report-title{
+    font-size:12px!important;
+    letter-spacing:2.1px!important;
+    max-width:100%!important;
+    overflow:hidden!important;
+    text-overflow:clip!important;
+  }
+
+  .top-report-grid{
+    gap:3px!important;
+  }
+
+  .top-stat{
+    height:40px!important;
+    border-radius:11px!important;
+    font-size:7px!important;
+  }
+
+  .top-stat b{
+    font-size:12px!important;
+  }
+
+  .download-row{
+    grid-template-columns:minmax(0,1fr) 64px 72px!important;
+    gap:4px!important;
+  }
+
+  .download-row .top-btn{
+    min-width:0!important;
+    height:32px!important;
+    font-size:8.5px!important;
+    letter-spacing:0!important;
+    padding:0 4px!important;
+  }
+
+  .download-row .month-select{
+    width:72px!important;
+    max-width:72px!important;
+    min-width:72px!important;
+    height:32px!important;
+    font-size:8.5px!important;
+    padding-left:6px!important;
+    padding-right:18px!important;
+  }
+
+  .bottom-menu{
+    grid-template-columns:minmax(0,1fr) 100px!important;
+    gap:6px!important;
+  }
+
+  .top .tabs{
+    gap:5px!important;
+    min-width:0!important;
+  }
+
+  .top .tab{
+    min-width:0!important;
+    height:34px!important;
+    font-size:12px!important;
+    padding:0 5px!important;
+  }
+
+  .top .search{
+    width:100px!important;
+    min-width:100px!important;
+    height:34px!important;
+    padding:0 8px!important;
+  }
+
+  .top .search input{
+    font-size:11px!important;
+    letter-spacing:1.2px!important;
+  }
+
+  .brand-title .brandbar strong{
+    font-size:12.5px!important;
+  }
+
+  .brand-title h1{
+    font-size:24px!important;
+  }
+
+  .brand-title .sub{
+    font-size:9px!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -207,7 +503,7 @@ html,body{
           <div class="top-stat yellow"><b id="topTotalUsed">0</b><span>utilizados</span></div>
         </div>
         <div class="download-row">
-          <button class="top-btn" id="generateReport">Baixar lista mês</button>
+          <button class="top-btn" id="generateReport">Baixar lista mês</button><button class="top-btn consumption-btn" id="showConsumption">Consumo</button>
           <select aria-label="Selecionar mês" class="month-select" id="monthSelect">
             <option value="0">Janeiro</option><option value="1">Fevereiro</option><option value="2">Março</option><option value="3">Abril</option>
             <option value="4">Maio</option><option value="5">Junho</option><option value="6">Julho</option><option value="7">Agosto</option>
@@ -242,59 +538,55 @@ html,body{
 <div class="field"><label>Quantidade em estoque</label><input id="productQty" min="0" placeholder="Ex: 4" type="number"/></div>
 <div class="field"><label>Estoque mínimo</label><input id="productMin" min="0" placeholder="Ex: 2" type="number"/></div>
 <div class="field"><label>Unidade</label><select id="productUnit"><option>un.</option><option>pct.</option><option>cx.</option><option>kg</option><option>fardos</option><option>frascos</option></select></div>
-<div class="field"><label>Categoria</label><select id="productCat"><option>Contra Turno</option><option>DML</option><option>Sala de Reunião</option><option>Secretaria / Cozinha</option><option value="nova">+ Adicionar nova categoria</option></select></div>
+<div class="field"><label>Categoria</label><select id="productCat"><option>DML</option><option>Sala de Reunião</option><option>Secretaria / Cozinha</option><option value="nova">+ Adicionar nova categoria</option></select></div>
 <div class="field hidden" id="newCatField"><label>Nova categoria</label><input id="newCat" placeholder="Ex: Banheiros, Manutenção..."/></div>
 <button class="save" id="saveProduct">Salvar produto</button>
 </div>
 </div>
 
 
+
+<div class="consumption-modal" id="consumptionModal">
+  <div class="consumption-sheet">
+    <div class="consumption-head">
+      <h2>Detalhe de consumo</h2>
+      <button class="consumption-print" id="printConsumption">Imprimir PDF</button><button class="consumption-close" id="closeConsumption">×</button>
+    </div>
+    <div class="consumption-info">
+      Comparativo do mês anterior com o mês selecionado. Referência usada: manter sempre <b>4 unidades</b> em estoque por produto.
+    </div>
+    <div id="consumptionList"></div>
+  </div>
+</div>
+
 <script>
 const baseProducts = [
-  {
-    "cat": "Contra Turno",
-    "name": "Batata Palha 1kg",
-    "icon": "🥔",
-    "stock": 2,
-    "used": 0,
-    "unit": "pct.",
-    "min": 1
-  },
-  {
-    "cat": "Contra Turno",
-    "name": "Farofa 1kg",
-    "icon": "🥣",
-    "stock": 2,
-    "used": 0,
-    "unit": "un.",
-    "min": 1
-  },
-  {
-    "cat": "DML",
-    "name": "Abanador",
-    "icon": "🪶",
-    "stock": 2,
-    "used": 0,
-    "unit": "un.",
-    "min": 1
-  },
   {
     "cat": "DML",
     "name": "Álcool 70",
     "icon": "🧴",
-    "stock": 22,
+    "stock": 20,
     "used": 0,
-    "unit": "un.",
-    "min": 3
+    "unit": "litros",
+    "min": 4
   },
   {
     "cat": "DML",
-    "name": "Álcool Gel 5L",
+    "name": "Álcool Gel",
     "icon": "🧴",
-    "stock": 4,
+    "stock": 1,
     "used": 0,
     "unit": "un.",
     "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Bom Ar",
+    "icon": "🚻",
+    "stock": 6,
+    "used": 0,
+    "unit": "un.",
+    "min": 2
   },
   {
     "cat": "DML",
@@ -302,12 +594,21 @@ const baseProducts = [
     "icon": "🚻",
     "stock": 2,
     "used": 0,
-    "unit": "un.",
+    "unit": "frascos",
+    "min": 2
+  },
+  {
+    "cat": "DML",
+    "name": "Bombril",
+    "icon": "🧽",
+    "stock": 1,
+    "used": 0,
+    "unit": "pct.",
     "min": 1
   },
   {
     "cat": "DML",
-    "name": "Borrifador",
+    "name": "Borrifadores",
     "icon": "💦",
     "stock": 3,
     "used": 0,
@@ -316,52 +617,52 @@ const baseProducts = [
   },
   {
     "cat": "DML",
-    "name": "Bucha Mop",
-    "icon": "🧽",
-    "stock": 2,
-    "used": 0,
-    "unit": "un.",
-    "min": 1
-  },
-  {
-    "cat": "DML",
-    "name": "Cabelo Mop",
+    "name": "Cabelo de Mop",
     "icon": "🧹",
-    "stock": 6,
+    "stock": 5,
     "used": 0,
     "unit": "un.",
     "min": 2
+  },
+  {
+    "cat": "DML",
+    "name": "Cloro em Gel",
+    "icon": "🧴",
+    "stock": 18,
+    "used": 0,
+    "unit": "un.",
+    "min": 4
+  },
+  {
+    "cat": "DML",
+    "name": "Cloro em Gel Diluído",
+    "icon": "🧴",
+    "stock": 3,
+    "used": 0,
+    "unit": "litros",
+    "min": 1
   },
   {
     "cat": "DML",
     "name": "Cloro Gel 1L",
     "icon": "🧴",
-    "stock": 10,
-    "used": 0,
+    "stock": 19,
+    "used": 6,
     "unit": "un.",
     "min": 2
   },
   {
     "cat": "DML",
-    "name": "Copos Descartáveis (100 un.)",
+    "name": "Copos Descartáveis",
     "icon": "🥤",
-    "stock": 2,
+    "stock": 1,
     "used": 0,
-    "unit": "pct.",
+    "unit": "cx.",
     "min": 1
   },
   {
     "cat": "DML",
-    "name": "Desinfetante 5L",
-    "icon": "🧴",
-    "stock": 4,
-    "used": 0,
-    "unit": "un.",
-    "min": 1
-  },
-  {
-    "cat": "DML",
-    "name": "Desentupidor de Banheiro",
+    "name": "Desentupidor Banheiro",
     "icon": "🚽",
     "stock": 2,
     "used": 0,
@@ -370,44 +671,53 @@ const baseProducts = [
   },
   {
     "cat": "DML",
-    "name": "Detergente 5L",
-    "icon": "🫧",
-    "stock": 3,
+    "name": "Difusores",
+    "icon": "🌿",
+    "stock": 4,
     "used": 0,
     "unit": "un.",
     "min": 1
   },
   {
     "cat": "DML",
-    "name": "Difusores",
-    "icon": "🌿",
-    "stock": 5,
+    "name": "Esfregão Amarelo",
+    "icon": "🧹",
+    "stock": 1,
     "used": 0,
     "unit": "un.",
-    "min": 2
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Espanadores",
+    "icon": "🪶",
+    "stock": 2,
+    "used": 0,
+    "unit": "un.",
+    "min": 1
   },
   {
     "cat": "DML",
     "name": "Esponja de Louça",
     "icon": "🧽",
-    "stock": 16,
+    "stock": 2,
     "used": 0,
-    "unit": "un.",
-    "min": 4
+    "unit": "pct.",
+    "min": 1
   },
   {
     "cat": "DML",
     "name": "Formikel Mata-Formigas",
     "icon": "🐜",
-    "stock": 2,
+    "stock": 1,
     "used": 0,
-    "unit": "cx.",
+    "unit": "un.",
     "min": 1
   },
   {
     "cat": "DML",
-    "name": "Grampo de Roupa (1 dúzia)",
-    "icon": "📎",
+    "name": "Formikell",
+    "icon": "🐜",
     "stock": 2,
     "used": 0,
     "unit": "un.",
@@ -415,61 +725,52 @@ const baseProducts = [
   },
   {
     "cat": "DML",
-    "name": "Koala Sol Brasil",
+    "name": "Grampo de Roupa",
+    "icon": "📎",
+    "stock": 1,
+    "used": 0,
+    "unit": "pct.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Koala",
     "icon": "✨",
     "stock": 6,
-    "used": 0,
+    "used": 4,
     "unit": "un.",
     "min": 2
   },
   {
     "cat": "DML",
-    "name": "Limpa Vidro 3L",
-    "icon": "🪟",
-    "stock": 3,
-    "used": 0,
-    "unit": "un.",
-    "min": 1
-  },
-  {
-    "cat": "DML",
-    "name": "Limpa Tudo FE 5L",
-    "icon": "🧼",
-    "stock": 2,
-    "used": 0,
-    "unit": "un.",
-    "min": 1
-  },
-  {
-    "cat": "DML",
-    "name": "Luva G",
+    "name": "Luva",
     "icon": "🧤",
-    "stock": 2,
+    "stock": 1,
     "used": 0,
     "unit": "cx.",
     "min": 1
   },
   {
     "cat": "DML",
-    "name": "Luva M (100 un.)",
+    "name": "Luva GG",
     "icon": "🧤",
-    "stock": 2,
+    "stock": 1,
     "used": 0,
     "unit": "cx.",
     "min": 1
   },
   {
     "cat": "DML",
-    "name": "Pá de Lixo",
-    "icon": "🗑️",
-    "stock": 5,
+    "name": "Luva M",
+    "icon": "🧤",
+    "stock": 1,
     "used": 0,
-    "unit": "un.",
+    "unit": "cx.",
     "min": 1
   },
   {
     "cat": "DML",
-    "name": "Pano de Chão Xadrez",
+    "name": "Panos Xadrez",
     "icon": "🧻",
     "stock": 15,
     "used": 0,
@@ -478,92 +779,47 @@ const baseProducts = [
   },
   {
     "cat": "DML",
-    "name": "Pano de Microfibra",
+    "name": "Papel Toalha",
     "icon": "🧻",
-    "stock": 10,
-    "used": 0,
-    "unit": "un.",
-    "min": 3
+    "stock": 15,
+    "used": 2,
+    "unit": "fardos",
+    "min": 4
   },
   {
     "cat": "DML",
-    "name": "Papel Higiênico / ADM",
+    "name": "Rolo de Perflex",
     "icon": "🧻",
-    "stock": 5,
+    "stock": 1,
+    "used": 0,
+    "unit": "rolo",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Sabão em Pó",
+    "icon": "🫧",
+    "stock": 1,
+    "used": 0,
+    "unit": "kg",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Sabão em Pó 500g",
+    "icon": "🫧",
+    "stock": 1,
+    "used": 0,
+    "unit": "un.",
+    "min": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Saco de Lixo 100L",
+    "icon": "🗑️",
+    "stock": 2,
     "used": 0,
     "unit": "pct.",
-    "min": 2
-  },
-  {
-    "cat": "DML",
-    "name": "Papel Higiênico / Aluno",
-    "icon": "🧻",
-    "stock": 12,
-    "used": 0,
-    "unit": "un.",
-    "min": 3
-  },
-  {
-    "cat": "DML",
-    "name": "Papel Toalha Fardo",
-    "icon": "🧻",
-    "stock": 8,
-    "used": 0,
-    "unit": "un.",
-    "min": 4
-  },
-  {
-    "cat": "DML",
-    "name": "Papel Toalha / Fardo",
-    "icon": "🧻",
-    "stock": 12,
-    "used": 0,
-    "unit": "un.",
-    "min": 4
-  },
-  {
-    "cat": "DML",
-    "name": "Passador de Cera Amarelo",
-    "icon": "🧹",
-    "stock": 2,
-    "used": 0,
-    "unit": "un.",
-    "min": 1
-  },
-  {
-    "cat": "DML",
-    "name": "Rastelo",
-    "icon": "🧹",
-    "stock": 2,
-    "used": 0,
-    "unit": "un.",
-    "min": 1
-  },
-  {
-    "cat": "DML",
-    "name": "Rodo de Limpeza",
-    "icon": "🧹",
-    "stock": 5,
-    "used": 0,
-    "unit": "un.",
-    "min": 2
-  },
-  {
-    "cat": "DML",
-    "name": "Sabão em Pó 1kg",
-    "icon": "🫧",
-    "stock": 2,
-    "used": 0,
-    "unit": "cx.",
-    "min": 1
-  },
-  {
-    "cat": "DML",
-    "name": "Sabonete Líquido 5L",
-    "icon": "🧴",
-    "stock": 3,
-    "used": 0,
-    "unit": "un.",
     "min": 1
   },
   {
@@ -571,9 +827,9 @@ const baseProducts = [
     "name": "Saco de Lixo 20L",
     "icon": "🛍️",
     "stock": 2,
-    "used": 0,
-    "unit": "un.",
-    "min": 1
+    "used": 6,
+    "unit": "pct.",
+    "min": 2
   },
   {
     "cat": "DML",
@@ -586,16 +842,16 @@ const baseProducts = [
   },
   {
     "cat": "DML",
-    "name": "Saco de Lixo 120L",
-    "icon": "🗑️",
+    "name": "Sapólio",
+    "icon": "🧼",
     "stock": 2,
-    "used": 0,
-    "unit": "pct.",
+    "used": 1,
+    "unit": "un.",
     "min": 1
   },
   {
     "cat": "DML",
-    "name": "Sapólio",
+    "name": "Sapólio 250g",
     "icon": "🧼",
     "stock": 2,
     "used": 0,
@@ -604,21 +860,21 @@ const baseProducts = [
   },
   {
     "cat": "DML",
-    "name": "Vassoura",
-    "icon": "🧹",
-    "stock": 4,
+    "name": "Sapólio 450g",
+    "icon": "🧼",
+    "stock": 1,
     "used": 0,
     "unit": "un.",
-    "min": 2
+    "min": 1
   },
   {
-    "cat": "Sala de Reunião",
-    "name": "Água Copo",
-    "icon": "💧",
-    "stock": 24,
+    "cat": "DML",
+    "name": "Vassouras",
+    "icon": "🧹",
+    "stock": 3,
     "used": 0,
     "unit": "un.",
-    "min": 6
+    "min": 1
   },
   {
     "cat": "Sala de Reunião",
@@ -640,38 +896,11 @@ const baseProducts = [
   },
   {
     "cat": "Secretaria / Cozinha",
-    "name": "Açúcar 5kg",
+    "name": "Açúcar",
     "icon": "🍬",
-    "stock": 2,
+    "stock": 5,
     "used": 0,
-    "unit": "pct.",
-    "min": 1
-  },
-  {
-    "cat": "Secretaria / Cozinha",
-    "name": "Balas (50 un.)",
-    "icon": "🍬",
-    "stock": 2,
-    "used": 0,
-    "unit": "pct.",
-    "min": 1
-  },
-  {
-    "cat": "Secretaria / Cozinha",
-    "name": "Bolacha (12 un.)",
-    "icon": "🍪",
-    "stock": 2,
-    "used": 0,
-    "unit": "pct.",
-    "min": 1
-  },
-  {
-    "cat": "Secretaria / Cozinha",
-    "name": "Chá de Boldo",
-    "icon": "🍵",
-    "stock": 2,
-    "used": 0,
-    "unit": "cx.",
+    "unit": "kg",
     "min": 1
   },
   {
@@ -696,10 +925,10 @@ const baseProducts = [
     "cat": "Secretaria / Cozinha",
     "name": "Filtro de Café",
     "icon": "☕",
-    "stock": 36,
+    "stock": 1,
     "used": 0,
     "unit": "cx.",
-    "min": 8
+    "min": 1
   }
 ];
 
@@ -709,6 +938,10 @@ let selectedMonth=currentDate.getMonth();
 let selectedYear=currentDate.getFullYear();
 let products=[];
 let editIndex=null;
+
+const inventoryVersion='lista-mesclada-dml-foto-v2';
+function inventoryVersionKey(){return `journey-inventory-version-${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}`;}
+
 
 const list=document.getElementById('list');
 const searchInput=document.getElementById('searchInput');
@@ -755,8 +988,14 @@ function ensureCategoryOption(cat){
 function syncCategoryOptions(){[...new Set(products.map(p=>p.cat))].forEach(ensureCategoryOption);}
 function loadMonth(){
   const saved=storageGet(monthKey(),null);
-  products=saved || cloneProducts(baseProducts).map(p=>({...p,used:0}));
-  if(!saved) saveCurrentMonth();
+  const savedVersion=localStorage.getItem(inventoryVersionKey());
+  if(saved && savedVersion===inventoryVersion){
+    products=saved;
+  }else{
+    products=cloneProducts(baseProducts);
+    saveCurrentMonth();
+    localStorage.setItem(inventoryVersionKey(),inventoryVersion);
+  }
   updateMonthLabels();
   syncCategoryOptions();
   render();
@@ -977,6 +1216,62 @@ document.getElementById('generateReport').addEventListener('click',()=>{
 
 monthSelect.value=String(selectedMonth);
 loadMonth();
+
+function previousMonthData(){
+  let m=selectedMonth-1;
+  let y=selectedYear;
+  if(m<0){m=11;y--;}
+  const key=`journey-products-${y}-${String(m+1).padStart(2,'0')}`;
+  const saved=storageGet(key,null);
+  return {month:m,year:y,label:`${monthNames[m]}/${y}`,products:saved || []};
+}
+function consumptionNeed(product){
+  const ideal=4;
+  const used=Number(product?.used || 0);
+  return Math.max(0, used);
+}
+function renderConsumptionReport(){
+  const prev=previousMonthData();
+  const currentLabel=monthLabel();
+  const current=sortedProducts();
+  const prevMap=new Map((prev.products || []).map(p=>[normalizeText(p.name),p]));
+  const cats=[...new Set(current.map(p=>p.cat))];
+  let html='';
+  cats.forEach(cat=>{
+    const items=current.filter(p=>p.cat===cat);
+    if(!items.length)return;
+    html+=`<div class="consumption-category">${escHTML(cat)}</div>`;
+    items.forEach(p=>{
+      const prevP=prevMap.get(normalizeText(p.name)) || {stock:0,used:0,unit:p.unit};
+      const prevBuy=consumptionNeed(prevP);
+      const currentBuy=consumptionNeed(p);
+      html+=`<div class="consumption-item">
+        <b>${p.icon||iconFor(p.name)} ${escHTML(p.name)}</b>
+        <div class="consumption-line">${prev.label}: Estoque ideal: 4 ${escHTML(prevP.unit||p.unit)} | usou: ${prevP.used||0} ${escHTML(prevP.unit||p.unit)} | <span class="consumption-buy">Comprar: ${prevBuy} ${escHTML(prevP.unit||p.unit)}</span></div>
+        <div class="consumption-line">${currentLabel}: Estoque ideal: 4 ${escHTML(p.unit)} | usou: ${p.used||0} ${escHTML(p.unit)} | <span class="consumption-buy">Comprar: ${currentBuy} ${escHTML(p.unit)}</span></div>
+      </div>`;
+    });
+  });
+  document.getElementById('consumptionList').innerHTML=html || '<div class="meta">Nenhum produto encontrado.</div>';
+}
+document.getElementById('showConsumption')?.addEventListener('click',()=>{
+  renderConsumptionReport();
+  document.getElementById('consumptionModal').classList.add('open');
+});
+document.getElementById('closeConsumption')?.addEventListener('click',()=>{
+  document.getElementById('consumptionModal').classList.remove('open');
+});
+document.getElementById('consumptionModal')?.addEventListener('click',e=>{
+  if(e.target.id==='consumptionModal') document.getElementById('consumptionModal').classList.remove('open');
+});
+
+
+document.getElementById('printConsumption')?.addEventListener('click',()=>{
+  renderConsumptionReport();
+  document.getElementById('consumptionModal').classList.add('open');
+  setTimeout(()=>window.print(),150);
+});
+
 </script><script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
