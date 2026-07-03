@@ -478,6 +478,178 @@ html,body{
   }
 }
 
+
+/* ===== Ajuste final: app 360px e cards sem sobreposição ===== */
+.app{
+  width:min(360px,100%)!important;
+  max-width:360px!important;
+}
+
+@media(max-width:430px){
+  .app{
+    width:100%!important;
+    max-width:360px!important;
+    margin:0 auto!important;
+  }
+
+  .top-inner{
+    width:100%!important;
+    max-width:344px!important;
+  }
+
+  .top-main{
+    grid-template-columns:128px minmax(0,1fr)!important;
+  }
+
+  .download-row{
+    grid-template-columns:minmax(0,1fr) 58px 72px!important;
+    gap:4px!important;
+  }
+
+  .download-row .top-btn{
+    height:30px!important;
+    border-radius:15px!important;
+    font-size:7.8px!important;
+    letter-spacing:0!important;
+    padding:0 3px!important;
+    min-width:0!important;
+    overflow:hidden!important;
+    white-space:nowrap!important;
+  }
+
+  .download-row .consumption-btn{
+    font-size:7.8px!important;
+    padding:0 3px!important;
+  }
+
+  .download-row .month-select{
+    width:72px!important;
+    max-width:72px!important;
+    min-width:72px!important;
+    height:30px!important;
+    font-size:8px!important;
+    padding-left:6px!important;
+    padding-right:18px!important;
+  }
+
+  .bottom-menu{
+    grid-template-columns:minmax(0,1fr) 96px!important;
+    gap:5px!important;
+  }
+
+  .top .tab{
+    font-size:11px!important;
+    height:32px!important;
+    padding:0 4px!important;
+  }
+
+  .top .search{
+    width:96px!important;
+    min-width:96px!important;
+    height:32px!important;
+    padding:0 7px!important;
+  }
+
+  .top .search input{
+    font-size:10.5px!important;
+    letter-spacing:1px!important;
+  }
+
+  .content{
+    padding-left:12px!important;
+    padding-right:12px!important;
+  }
+
+  .card{
+    grid-template-columns:78px minmax(0,1fr)!important;
+    gap:10px!important;
+    padding:12px!important;
+    border-radius:22px!important;
+    overflow:hidden!important;
+  }
+
+  .icon{
+    width:68px!important;
+    height:68px!important;
+    border-radius:21px!important;
+    font-size:28px!important;
+  }
+
+  .name-row{
+    display:block!important;
+  }
+
+  .name{
+    font-size:15px!important;
+    line-height:1.12!important;
+    padding-right:34px!important;
+    word-break:normal!important;
+    overflow-wrap:anywhere!important;
+  }
+
+  .meta{
+    font-size:12px!important;
+    line-height:1.45!important;
+  }
+
+  .card-actions{
+    position:absolute!important;
+    top:14px!important;
+    right:10px!important;
+    display:flex!important;
+    align-items:center!important;
+    gap:5px!important;
+  }
+
+  .tag{
+    font-size:9px!important;
+    padding:6px 7px!important;
+    max-width:78px!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+
+  .delete-product{
+    width:24px!important;
+    height:24px!important;
+    font-size:13px!important;
+  }
+
+  .stock{
+    grid-template-columns:1fr 1fr!important;
+    gap:7px!important;
+    margin-top:10px!important;
+  }
+
+  .box{
+    min-width:0!important;
+    padding:8px!important;
+    border-radius:15px!important;
+  }
+
+  .box small{
+    font-size:10px!important;
+  }
+
+  .box b{
+    font-size:18px!important;
+  }
+
+  .add{
+    width:58px!important;
+    height:58px!important;
+    right:14px!important;
+    bottom:18px!important;
+    left:auto!important;
+  }
+}
+
+@media(min-width:431px){
+  .app{
+    max-width:360px!important;
+  }
+}
+
 </style>
 </head>
 <body>
