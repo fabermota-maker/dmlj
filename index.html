@@ -782,16 +782,6 @@ const baseProducts = [
   },
   {
     "cat": "DML",
-    "name": "Bom Ar Perfume para Banheiro",
-    "icon": "🚻",
-    "stock": 2,
-    "used": 0,
-    "unit": "frascos",
-    "min": 2,
-    "ideal": 4
-  },
-  {
-    "cat": "DML",
     "name": "Bombril",
     "icon": "🧽",
     "stock": 1,
@@ -912,26 +902,6 @@ const baseProducts = [
   },
   {
     "cat": "DML",
-    "name": "Formikel Mata-Formigas",
-    "icon": "🐜",
-    "stock": 1,
-    "used": 0,
-    "unit": "un.",
-    "min": 1,
-    "ideal": 4
-  },
-  {
-    "cat": "DML",
-    "name": "Formikell",
-    "icon": "🐜",
-    "stock": 2,
-    "used": 0,
-    "unit": "un.",
-    "min": 1,
-    "ideal": 4
-  },
-  {
-    "cat": "DML",
     "name": "Grampo de Roupa",
     "icon": "📎",
     "stock": 1,
@@ -952,7 +922,7 @@ const baseProducts = [
   },
   {
     "cat": "DML",
-    "name": "Luva",
+    "name": "Luvas",
     "icon": "🧤",
     "stock": 1,
     "used": 0,
@@ -962,21 +932,11 @@ const baseProducts = [
   },
   {
     "cat": "DML",
-    "name": "Luva GG",
-    "icon": "🧤",
-    "stock": 1,
+    "name": "Mata-Formigas Formikel",
+    "icon": "🐜",
+    "stock": 2,
     "used": 0,
-    "unit": "cx.",
-    "min": 1,
-    "ideal": 4
-  },
-  {
-    "cat": "DML",
-    "name": "Luva M",
-    "icon": "🧤",
-    "stock": 1,
-    "used": 0,
-    "unit": "cx.",
+    "unit": "un.",
     "min": 1,
     "ideal": 4
   },
@@ -1057,16 +1017,6 @@ const baseProducts = [
     "stock": 2,
     "used": 0,
     "unit": "pct.",
-    "min": 1,
-    "ideal": 4
-  },
-  {
-    "cat": "DML",
-    "name": "Sapólio",
-    "icon": "🧼",
-    "stock": 2,
-    "used": 1,
-    "unit": "un.",
     "min": 1,
     "ideal": 4
   },
@@ -1169,7 +1119,7 @@ let selectedYear=currentDate.getFullYear();
 let products=[];
 let editIndex=null;
 
-const inventoryVersion='lista-mesclada-dml-foto-v2';
+const inventoryVersion='lista-atualizada-sem-duplicados-v3';
 function inventoryVersionKey(){return `journey-inventory-version-${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}`;}
 
 
