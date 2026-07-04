@@ -664,6 +664,36 @@ html,body{
   .top-stat.green,.top-stat.red,.top-stat.yellow,.top-stat.blue,.top-stat.buy{border-width:1.5px!important}
 }
 
+
+/* ===== Modal lista de compras: COMPRAR e CRÍTICOS ===== */
+.buy-modal{position:fixed;inset:0;background:rgba(10,6,24,.72);backdrop-filter:blur(16px);display:none;align-items:flex-end;justify-content:center;z-index:42}
+.buy-modal.open{display:flex}
+.buy-sheet{width:min(430px,100%);max-height:82dvh;overflow:auto;background:linear-gradient(180deg,rgba(72,51,126,.98),rgba(25,18,51,.98));border:1px solid rgba(255,255,255,.16);border-radius:30px 30px 0 0;padding:18px 18px 24px;box-shadow:0 -26px 80px rgba(0,0,0,.38)}
+.buy-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px}
+.buy-head h2{margin:0;font-size:21px}
+.buy-close{border:0;background:rgba(255,255,255,.12);color:white;width:38px;height:38px;border-radius:14px;font-size:22px}
+.buy-print{border:0;border-radius:14px;background:linear-gradient(135deg,var(--yellow),#f8f5a1);color:#201241;font-weight:900;padding:11px 12px;font-size:11px;white-space:nowrap;cursor:pointer}
+.buy-info{color:var(--muted);font-size:12px;line-height:1.45;margin-bottom:14px}
+.buy-category{color:var(--yellow);font-weight:900;font-size:13px;margin:18px 0 8px;text-transform:uppercase}
+.buy-item{background:rgba(255,255,255,.08);border:1px solid var(--line);border-radius:18px;padding:12px;margin:8px 0}
+.buy-item b{display:block;font-size:14px;margin-bottom:7px}
+.buy-line{color:var(--muted);font-size:12px;line-height:1.45}
+.buy-qtd{color:var(--yellow);font-weight:900}
+@media(max-width:430px){.buy-print{font-size:10px;padding:10px 10px}}
+@media print{
+  body.print-buy *{visibility:hidden!important}
+  body.print-buy #buyModal,body.print-buy #buyModal *{visibility:visible!important}
+  body.print-buy #buyModal{position:absolute!important;inset:0!important;display:block!important;background:#fff!important;color:#111!important;backdrop-filter:none!important}
+  body.print-buy .buy-sheet{width:100%!important;max-height:none!important;overflow:visible!important;background:#fff!important;color:#111!important;border:0!important;border-radius:0!important;box-shadow:none!important;padding:24px!important}
+  body.print-buy .buy-head{border-bottom:1px solid #ddd!important;padding-bottom:12px!important;margin-bottom:16px!important}
+  body.print-buy .buy-head h2{color:#111!important;font-size:22px!important}
+  body.print-buy .buy-close,body.print-buy .buy-print{display:none!important}
+  body.print-buy .buy-info,body.print-buy .buy-line{color:#333!important}
+  body.print-buy .buy-category{color:#111!important;border-bottom:1px solid #ddd!important;padding-bottom:4px!important}
+  body.print-buy .buy-item{background:#fff!important;border:1px solid #ddd!important;color:#111!important;page-break-inside:avoid!important}
+  body.print-buy .buy-qtd{color:#111!important;font-weight:900!important}
+}
+
 </style>
 </head>
 <body>
@@ -687,8 +717,8 @@ html,body{
           <button class="top-stat green" onclick="editDashboardNumber('products')"><b id="topTotalProducts">0</b><span>produtos</span></button>
           <button class="top-stat blue" onclick="editDashboardNumber('stock')"><b id="topTotalStock">0</b><span>em estoque</span></button>
           <button class="top-stat yellow" onclick="editDashboardNumber('used')"><b id="topTotalUsed">0</b><span>utilizados</span></button>
-          <button class="top-stat red" onclick="editDashboardNumber('low')"><b id="topLowStock">0</b><span>críticos</span></button>
-          <button class="top-stat buy" onclick="editDashboardNumber('buy')"><b id="topBuyNeeded">0</b><span>comprar</span></button>
+          <button class="top-stat red" onclick="showBuyList()"><b id="topLowStock">0</b><span>críticos</span></button>
+          <button class="top-stat buy" onclick="showBuyList()"><b id="topBuyNeeded">0</b><span>comprar</span></button>
         </div>
         <div class="download-row">
           <button class="top-btn" id="generateReport">Baixar lista mês</button><button class="top-btn consumption-btn" id="showConsumption">Consumo</button>
@@ -735,6 +765,18 @@ html,body{
 
 
 
+<div class="buy-modal" id="buyModal">
+  <div class="buy-sheet">
+    <div class="buy-head">
+      <h2>Lista de compras</h2>
+      <button class="buy-print" id="printBuyList">Imprimir PDF</button>
+      <button class="buy-close" id="closeBuyList">×</button>
+    </div>
+    <div class="buy-info">Produtos que precisam ser comprados para voltar ao <b>estoque ideal</b>.</div>
+    <div id="buyList"></div>
+  </div>
+</div>
+
 <div class="consumption-modal" id="consumptionModal">
   <div class="consumption-sheet">
     <div class="consumption-head">
@@ -779,6 +821,16 @@ const baseProducts = [
     "unit": "un.",
     "min": 2,
     "ideal": 6
+  },
+  {
+    "cat": "DML",
+    "name": "Bom Ar Perfume para Banheiro",
+    "icon": "🚻",
+    "stock": 2,
+    "used": 0,
+    "unit": "frascos",
+    "min": 2,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -902,6 +954,26 @@ const baseProducts = [
   },
   {
     "cat": "DML",
+    "name": "Formikel Mata-Formigas",
+    "icon": "🐜",
+    "stock": 1,
+    "used": 0,
+    "unit": "un.",
+    "min": 1,
+    "ideal": 4
+  },
+  {
+    "cat": "DML",
+    "name": "Formikell",
+    "icon": "🐜",
+    "stock": 2,
+    "used": 0,
+    "unit": "un.",
+    "min": 1,
+    "ideal": 4
+  },
+  {
+    "cat": "DML",
     "name": "Grampo de Roupa",
     "icon": "📎",
     "stock": 1,
@@ -922,7 +994,7 @@ const baseProducts = [
   },
   {
     "cat": "DML",
-    "name": "Luvas",
+    "name": "Luva",
     "icon": "🧤",
     "stock": 1,
     "used": 0,
@@ -932,11 +1004,21 @@ const baseProducts = [
   },
   {
     "cat": "DML",
-    "name": "Mata-Formigas Formikel",
-    "icon": "🐜",
-    "stock": 2,
+    "name": "Luva GG",
+    "icon": "🧤",
+    "stock": 1,
     "used": 0,
-    "unit": "un.",
+    "unit": "cx.",
+    "min": 1,
+    "ideal": 4
+  },
+  {
+    "cat": "DML",
+    "name": "Luva M",
+    "icon": "🧤",
+    "stock": 1,
+    "used": 0,
+    "unit": "cx.",
     "min": 1,
     "ideal": 4
   },
@@ -1017,6 +1099,16 @@ const baseProducts = [
     "stock": 2,
     "used": 0,
     "unit": "pct.",
+    "min": 1,
+    "ideal": 4
+  },
+  {
+    "cat": "DML",
+    "name": "Sapólio",
+    "icon": "🧼",
+    "stock": 2,
+    "used": 1,
+    "unit": "un.",
     "min": 1,
     "ideal": 4
   },
@@ -1119,7 +1211,7 @@ let selectedYear=currentDate.getFullYear();
 let products=[];
 let editIndex=null;
 
-const inventoryVersion='lista-atualizada-sem-duplicados-v3';
+const inventoryVersion='lista-mesclada-dml-foto-v2';
 function inventoryVersionKey(){return `journey-inventory-version-${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}`;}
 
 
@@ -1475,6 +1567,44 @@ document.getElementById('printConsumption')?.addEventListener('click',()=>{
   renderConsumptionReport();
   document.getElementById('consumptionModal').classList.add('open');
   setTimeout(()=>window.print(),150);
+});
+
+
+function buyAmountForProduct(p){return Math.max(0, idealForProduct(p)-Number(p.stock||0));}
+window.showBuyList=function(){renderBuyList();document.getElementById('buyModal').classList.add('open');};
+function renderBuyList(){
+  const items=sortedProducts().filter(p=>buyAmountForProduct(p)>0);
+  const totalItems=items.length;
+  const totalQtd=items.reduce((s,p)=>s+buyAmountForProduct(p),0);
+  const cats=[...new Set(items.map(p=>p.cat))];
+  let html=`<div class="buy-info"><b>${totalItems}</b> produtos precisam de reposição • <b>${totalQtd}</b> itens para comprar.</div>`;
+  cats.forEach(cat=>{
+    const catItems=items.filter(p=>p.cat===cat);
+    if(!catItems.length)return;
+    html+=`<div class="buy-category">${escHTML(cat)}</div>`;
+    catItems.forEach(p=>{
+      const comprar=buyAmountForProduct(p);
+      html+=`<div class="buy-item">
+        <b>${p.icon||iconFor(p.name)} ${escHTML(p.name)}</b>
+        <div class="buy-line">Estoque ideal: ${idealForProduct(p)} ${escHTML(p.unit)}</div>
+        <div class="buy-line">Em estoque: ${p.stock} ${escHTML(p.unit)}</div>
+        <div class="buy-line">Utilizados no mês: ${p.used||0} ${escHTML(p.unit)}</div>
+        <div class="buy-line buy-qtd">Comprar: ${comprar} ${escHTML(p.unit)}</div>
+      </div>`;
+    });
+  });
+  if(!items.length){
+    html='<div class="buy-item"><b>✅ Estoque abastecido</b><div class="buy-line">Nenhum produto precisa ser comprado neste momento.</div></div>';
+  }
+  document.getElementById('buyList').innerHTML=html;
+}
+document.getElementById('closeBuyList')?.addEventListener('click',()=>document.getElementById('buyModal').classList.remove('open'));
+document.getElementById('buyModal')?.addEventListener('click',e=>{if(e.target.id==='buyModal')document.getElementById('buyModal').classList.remove('open');});
+document.getElementById('printBuyList')?.addEventListener('click',()=>{
+  renderBuyList();
+  document.body.classList.add('print-buy');
+  document.getElementById('buyModal').classList.add('open');
+  setTimeout(()=>{window.print();setTimeout(()=>document.body.classList.remove('print-buy'),500);},150);
 });
 
 </script><script>
