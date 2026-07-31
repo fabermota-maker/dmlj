@@ -707,6 +707,729 @@ html,body{
   }
 }
 
+
+/* ===== v7: layout visual dos cards conforme referência ===== */
+.card{
+  display:grid!important;
+  grid-template-columns:84px minmax(0,1fr)!important;
+  gap:12px!important;
+  align-items:start!important;
+  padding:12px!important;
+  border-radius:22px!important;
+  background:#33244f!important;
+  border:1.5px solid rgba(39,201,183,.55)!important;
+  box-shadow:0 12px 30px rgba(0,0,0,.18)!important;
+}
+.card.low{
+  border-color:rgba(255,82,95,.95)!important;
+}
+.card-icon-column{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:7px;
+}
+.card .icon{
+  width:78px!important;
+  height:78px!important;
+  border-radius:18px!important;
+  background:#686b7d!important;
+  border:0!important;
+  font-size:42px!important;
+  overflow:hidden;
+}
+.icon-glyph{
+  display:block;
+  filter:grayscale(1) saturate(0) brightness(1.75) contrast(1.2);
+  font-family:"Segoe UI Emoji","Apple Color Emoji",sans-serif;
+}
+.card-tools{
+  width:100%;
+  display:grid;
+  grid-template-columns:1fr 32px;
+  gap:6px;
+}
+.edit-product{
+  margin:0!important;
+  height:29px!important;
+  padding:0 6px!important;
+  border:1px solid var(--teal)!important;
+  border-radius:12px!important;
+  background:rgba(255,255,255,.08)!important;
+  color:#d9d5e5!important;
+  font-size:10px!important;
+  text-transform:uppercase;
+}
+.delete-product{
+  width:32px!important;
+  height:29px!important;
+  border-radius:12px!important;
+  font-size:18px!important;
+}
+.card-main{
+  min-width:0;
+}
+.card .name-row{
+  display:block!important;
+}
+.card .name{
+  font-size:21px!important;
+  line-height:1.08!important;
+  font-weight:500!important;
+  margin:2px 0 10px!important;
+  white-space:normal;
+}
+.card-actions .tag{display:none!important}
+.stock{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:9px!important;
+  margin:0 0 8px!important;
+}
+.stock .box{
+  min-width:0;
+  height:78px;
+  padding:8px 9px!important;
+  border-radius:15px!important;
+  border:1.5px solid var(--teal)!important;
+  background:#3d3158!important;
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr auto;
+  grid-template-rows:19px 1fr;
+  align-items:center;
+}
+.stock .box small{
+  grid-column:1 / -1;
+  display:block!important;
+  margin:0!important;
+  color:#d3cddd!important;
+  font-size:10px!important;
+  line-height:1!important;
+  text-align:right;
+  text-transform:uppercase;
+}
+.stock .box small::first-letter{
+  font-weight:900;
+}
+.stock-value{
+  display:flex;
+  align-items:baseline;
+  min-width:0;
+  line-height:1;
+}
+.stock-value b{
+  font-size:38px!important;
+  font-weight:500!important;
+  color:#fff!important;
+  letter-spacing:-2px;
+}
+.stock-value em{
+  margin-left:5px;
+  color:#ddd5e9;
+  font-size:11px;
+  font-style:normal;
+}
+.box.used .stock-value b,
+.box.used .stock-value em{
+  color:#ff5965!important;
+}
+.card.low .box.stock-now .stock-value b{
+  color:#fff!important;
+}
+.quantity-controls{
+  display:flex;
+  gap:4px;
+  align-items:center;
+}
+.quantity-controls button{
+  width:27px;
+  height:27px;
+  border-radius:50%;
+  border:1.5px solid var(--teal);
+  background:transparent;
+  color:#fff;
+  font-size:19px;
+  line-height:1;
+  padding:0;
+  cursor:pointer;
+}
+.card .bar{
+  height:9px!important;
+  margin:8px 0 6px!important;
+  background:rgba(255,255,255,.13)!important;
+}
+.card .fill{
+  background:#ffd244!important;
+}
+.card.low .fill{
+  background:#ffd244!important;
+}
+.card .alert{
+  margin-top:5px!important;
+  font-size:13px!important;
+  text-align:center;
+  color:#ff5965!important;
+}
+.card .meta{display:none!important}
+.card-status-label{
+  position:absolute;
+  left:-9999px;
+}
+@media(max-width:380px){
+  .card{grid-template-columns:74px minmax(0,1fr)!important;gap:9px!important}
+  .card .icon{width:70px!important;height:70px!important;font-size:36px!important}
+  .card .name{font-size:18px!important}
+  .stock-value b{font-size:32px!important}
+  .quantity-controls button{width:24px;height:24px;font-size:17px}
+}
+
+
+/* ===== v8: correção definitiva de sobreposição nos cards ===== */
+.card{
+  grid-template-columns:88px minmax(0,1fr)!important;
+  gap:14px!important;
+  padding:14px!important;
+}
+.card-main{
+  min-width:0!important;
+}
+.card .name{
+  font-size:22px!important;
+  line-height:1.12!important;
+  margin:0 0 12px!important;
+}
+.stock{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+  gap:12px!important;
+  width:100%!important;
+}
+.stock .box{
+  min-width:0!important;
+  height:94px!important;
+  padding:8px 10px 10px!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  grid-template-rows:18px minmax(0,1fr)!important;
+  column-gap:8px!important;
+  align-items:center!important;
+  overflow:hidden!important;
+}
+.stock .box small{
+  grid-column:1 / -1!important;
+  grid-row:1!important;
+  text-align:right!important;
+  font-size:12px!important;
+  line-height:1!important;
+}
+.stock-value{
+  grid-column:1!important;
+  grid-row:2!important;
+  min-width:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  line-height:1!important;
+  overflow:hidden!important;
+}
+.stock-value b{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  font-size:clamp(34px,7vw,54px)!important;
+  line-height:.88!important;
+  letter-spacing:-2px!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:clip!important;
+}
+.stock-value em{
+  display:block!important;
+  margin:5px 0 0!important;
+  font-size:12px!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+}
+.quantity-controls{
+  grid-column:2!important;
+  grid-row:2!important;
+  display:flex!important;
+  flex-direction:row!important;
+  gap:6px!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  flex-shrink:0!important;
+}
+.quantity-controls button{
+  width:30px!important;
+  min-width:30px!important;
+  height:30px!important;
+  min-height:30px!important;
+  flex:0 0 30px!important;
+  font-size:20px!important;
+}
+.card .bar{
+  margin-top:10px!important;
+}
+.card .alert{
+  margin-top:8px!important;
+  line-height:1.25!important;
+}
+@media(max-width:430px){
+  .card{
+    grid-template-columns:78px minmax(0,1fr)!important;
+    gap:10px!important;
+    padding:11px!important;
+  }
+  .card .icon{
+    width:74px!important;
+    height:74px!important;
+  }
+  .card .name{
+    font-size:19px!important;
+    margin-bottom:10px!important;
+  }
+  .stock{
+    gap:8px!important;
+  }
+  .stock .box{
+    height:88px!important;
+    padding:7px 8px 9px!important;
+    column-gap:6px!important;
+  }
+  .stock-value b{
+    font-size:clamp(30px,8vw,44px)!important;
+  }
+  .quantity-controls{
+    gap:4px!important;
+  }
+  .quantity-controls button{
+    width:27px!important;
+    min-width:27px!important;
+    height:27px!important;
+    min-height:27px!important;
+    flex-basis:27px!important;
+    font-size:18px!important;
+  }
+}
+@media(max-width:360px){
+  .card{
+    grid-template-columns:70px minmax(0,1fr)!important;
+  }
+  .card .icon{
+    width:68px!important;
+    height:68px!important;
+  }
+  .stock{
+    grid-template-columns:1fr!important;
+  }
+  .stock .box{
+    height:82px!important;
+  }
+  .card .alert{
+    font-size:12px!important;
+  }
+}
+
+
+/* ===== v9: quantidades sempre visíveis ===== */
+.stock .box{
+  position:relative!important;
+  overflow:visible!important;
+}
+.stock-value{
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  align-items:flex-start!important;
+  min-width:48px!important;
+  width:auto!important;
+  height:auto!important;
+  overflow:visible!important;
+  opacity:1!important;
+  visibility:visible!important;
+  z-index:2!important;
+}
+.stock-value b{
+  display:block!important;
+  position:relative!important;
+  width:auto!important;
+  max-width:none!important;
+  min-width:36px!important;
+  height:auto!important;
+  margin:0!important;
+  padding:0!important;
+  font-size:42px!important;
+  line-height:.9!important;
+  letter-spacing:-1px!important;
+  color:#ffffff!important;
+  opacity:1!important;
+  visibility:visible!important;
+  overflow:visible!important;
+  white-space:nowrap!important;
+  z-index:3!important;
+}
+.stock .box.used .stock-value b{
+  color:#ff5965!important;
+}
+.stock-value em{
+  display:block!important;
+  position:relative!important;
+  margin:6px 0 0!important;
+  color:#ddd5e9!important;
+  opacity:1!important;
+  visibility:visible!important;
+  white-space:nowrap!important;
+  z-index:3!important;
+}
+.quantity-controls{
+  z-index:4!important;
+}
+@media(max-width:430px){
+  .stock-value b{
+    font-size:36px!important;
+  }
+}
+
+
+/* ===== v10: layout profissional sem sobreposição ===== */
+.stock{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:10px!important;
+  width:100%!important;
+  align-items:stretch!important;
+}
+.stock .box{
+  min-width:0!important;
+  height:auto!important;
+  min-height:128px!important;
+  padding:8px 8px 10px!important;
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  grid-template-rows:16px minmax(52px,1fr) 34px!important;
+  row-gap:6px!important;
+  align-items:center!important;
+  justify-items:center!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+.stock .box small{
+  grid-column:1!important;
+  grid-row:1!important;
+  width:100%!important;
+  text-align:right!important;
+  font-size:11px!important;
+  line-height:1!important;
+  margin:0!important;
+  padding:0 2px 0 0!important;
+}
+.stock-value{
+  grid-column:1!important;
+  grid-row:2!important;
+  width:100%!important;
+  min-width:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+.stock-value b{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+  font-size:clamp(34px,10vw,52px)!important;
+  line-height:.9!important;
+  letter-spacing:-1px!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:clip!important;
+  box-sizing:border-box!important;
+}
+.stock-value em{
+  display:block!important;
+  margin:5px 0 0!important;
+  font-size:11px!important;
+  line-height:1!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+}
+.quantity-controls{
+  grid-column:1!important;
+  grid-row:3!important;
+  width:100%!important;
+  display:flex!important;
+  flex-direction:row!important;
+  justify-content:center!important;
+  align-items:center!important;
+  gap:10px!important;
+  margin:0!important;
+  padding:0!important;
+}
+.quantity-controls button{
+  width:30px!important;
+  min-width:30px!important;
+  height:30px!important;
+  min-height:30px!important;
+  flex:0 0 30px!important;
+  margin:0!important;
+  padding:0!important;
+  border-radius:50%!important;
+  font-size:18px!important;
+  line-height:28px!important;
+  text-align:center!important;
+}
+@media(max-width:430px){
+  .card{
+    grid-template-columns:82px minmax(0,1fr)!important;
+    gap:10px!important;
+    padding:10px!important;
+  }
+  .card .name{
+    font-size:18px!important;
+    line-height:1.15!important;
+    margin-bottom:9px!important;
+  }
+  .stock{
+    gap:8px!important;
+  }
+  .stock .box{
+    min-height:122px!important;
+    padding:7px 6px 9px!important;
+    grid-template-rows:15px minmax(50px,1fr) 32px!important;
+  }
+  .stock-value b{
+    font-size:clamp(32px,9.5vw,44px)!important;
+  }
+  .quantity-controls{
+    gap:8px!important;
+  }
+  .quantity-controls button{
+    width:28px!important;
+    min-width:28px!important;
+    height:28px!important;
+    min-height:28px!important;
+    flex-basis:28px!important;
+    font-size:17px!important;
+    line-height:26px!important;
+  }
+}
+@media(max-width:360px){
+  .card{
+    grid-template-columns:72px minmax(0,1fr)!important;
+    gap:8px!important;
+  }
+  .card .icon{
+    width:68px!important;
+    height:68px!important;
+  }
+  .stock{
+    grid-template-columns:1fr 1fr!important;
+    gap:6px!important;
+  }
+  .stock .box{
+    min-height:116px!important;
+    padding-left:5px!important;
+    padding-right:5px!important;
+  }
+  .stock-value b{
+    font-size:34px!important;
+  }
+  .quantity-controls{
+    gap:6px!important;
+  }
+  .quantity-controls button{
+    width:26px!important;
+    min-width:26px!important;
+    height:26px!important;
+    min-height:26px!important;
+    flex-basis:26px!important;
+    font-size:16px!important;
+    line-height:24px!important;
+  }
+}
+
+
+/* ===== v12: cards compactos, claros e responsivos ===== */
+.card{
+  grid-template-columns:72px minmax(0,1fr)!important;
+  gap:10px!important;
+  padding:10px!important;
+  border-radius:20px!important;
+}
+.card .icon{
+  width:68px!important;
+  height:68px!important;
+  border-radius:16px!important;
+  font-size:34px!important;
+}
+.card-tools{
+  grid-template-columns:1fr 30px!important;
+  gap:5px!important;
+}
+.edit-product{
+  height:27px!important;
+  font-size:9px!important;
+}
+.delete-product{
+  width:30px!important;
+  height:27px!important;
+}
+.card .name{
+  font-size:18px!important;
+  line-height:1.12!important;
+  margin:1px 0 8px!important;
+}
+.stock{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:8px!important;
+  margin:0 0 7px!important;
+}
+.stock .box{
+  min-width:0!important;
+  min-height:74px!important;
+  height:74px!important;
+  padding:7px 7px!important;
+  display:grid!important;
+  grid-template-columns:minmax(32px,1fr) auto!important;
+  grid-template-rows:14px 1fr!important;
+  column-gap:6px!important;
+  row-gap:2px!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+.stock .box small{
+  grid-column:1 / -1!important;
+  grid-row:1!important;
+  text-align:right!important;
+  font-size:10px!important;
+  line-height:1!important;
+  padding-right:2px!important;
+}
+.stock-value{
+  grid-column:1!important;
+  grid-row:2!important;
+  min-width:0!important;
+  width:100%!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  align-items:flex-start!important;
+  overflow:hidden!important;
+}
+.stock-value b{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  font-size:30px!important;
+  line-height:.9!important;
+  letter-spacing:-1px!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-align:left!important;
+}
+.stock-value em{
+  display:block!important;
+  margin:4px 0 0!important;
+  font-size:9px!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+}
+.quantity-controls{
+  grid-column:2!important;
+  grid-row:2!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:4px!important;
+  justify-content:center!important;
+  align-items:center!important;
+  width:25px!important;
+}
+.quantity-controls button{
+  width:24px!important;
+  min-width:24px!important;
+  height:24px!important;
+  min-height:24px!important;
+  flex:0 0 24px!important;
+  font-size:15px!important;
+  line-height:22px!important;
+}
+.card .bar{
+  height:8px!important;
+  margin:6px 0 4px!important;
+}
+.card .alert{
+  margin-top:4px!important;
+  font-size:11px!important;
+  line-height:1.2!important;
+}
+@media(max-width:360px){
+  .card{
+    grid-template-columns:64px minmax(0,1fr)!important;
+    gap:8px!important;
+    padding:9px!important;
+  }
+  .card .icon{
+    width:60px!important;
+    height:60px!important;
+    font-size:30px!important;
+  }
+  .card .name{
+    font-size:16px!important;
+  }
+  .stock{
+    gap:6px!important;
+  }
+  .stock .box{
+    min-height:70px!important;
+    height:70px!important;
+    padding:6px!important;
+    grid-template-columns:minmax(28px,1fr) 23px!important;
+  }
+  .stock-value b{
+    font-size:27px!important;
+  }
+  .quantity-controls{
+    width:23px!important;
+  }
+  .quantity-controls button{
+    width:22px!important;
+    min-width:22px!important;
+    height:22px!important;
+    min-height:22px!important;
+    flex-basis:22px!important;
+    font-size:14px!important;
+    line-height:20px!important;
+  }
+}
+
+/* Modal de novo produto: nome sempre visível */
+#modal .sheet{
+  max-height:90dvh!important;
+  overflow-y:auto!important;
+}
+#modal .field:first-of-type{
+  position:sticky;
+  top:54px;
+  z-index:3;
+  padding:8px 0 5px;
+  margin-top:2px;
+  background:linear-gradient(180deg,#3f2c67 78%,rgba(63,44,103,0));
+}
+#modal #productName{
+  border-color:var(--teal)!important;
+  box-shadow:0 0 0 2px rgba(32,205,188,.12)!important;
+}
+
 </style>
 </head>
 <body>
@@ -765,7 +1488,7 @@ html,body{
 <div class="modal" id="modal">
 <div class="sheet">
 <div class="sheet-head"><h2 id="modalTitle">Adicionar produto</h2><button class="close" id="closeModal">×</button></div>
-<div class="field"><label>Nome do produto</label><input id="productName" placeholder="Ex: Desinfetante 5L"/></div>
+<div class="field"><label>Nome do produto</label><input id="productName" name="productName" autocomplete="off" required placeholder="Digite o nome do produto"/></div>
 <div class="field"><label>Quantidade em estoque</label><input id="productQty" min="0" placeholder="Ex: 4" type="number"/></div>
 <div class="field"><label>Utilizados no mês</label><input id="productUsed" min="0" placeholder="Ex: 0" type="number"/></div>
 <div class="field"><label>Estoque mínimo</label><input id="productMin" min="0" placeholder="Ex: 2" type="number"/></div>
@@ -834,8 +1557,8 @@ const baseProducts = [
     "stock": 17,
     "used": 0,
     "unit": "un.",
-    "ideal": 17,
-    "min": 4
+    "min": 1,
+    "ideal": 17
   },
   {
     "cat": "DML",
@@ -844,18 +1567,18 @@ const baseProducts = [
     "stock": 1,
     "used": 0,
     "unit": "un.",
-    "ideal": 4,
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
     "name": "Bom Ar",
     "icon": "🌬️",
-    "stock": 2,
-    "used": 0,
+    "stock": 4,
+    "used": 2,
     "unit": "un.",
-    "ideal": 2,
-    "min": 2
+    "min": 1,
+    "ideal": 2
   },
   {
     "cat": "DML",
@@ -864,8 +1587,8 @@ const baseProducts = [
     "stock": 1,
     "used": 0,
     "unit": "pct.",
-    "ideal": 4,
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -874,28 +1597,38 @@ const baseProducts = [
     "stock": 3,
     "used": 0,
     "unit": "un.",
-    "ideal": 4,
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
     "name": "Bucha Verde",
     "icon": "🟩",
-    "stock": 1,
-    "used": 0,
+    "stock": 2,
+    "used": 1,
     "unit": "un.",
-    "ideal": 4,
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
     "name": "Cabelo de Mop",
     "icon": "🧹",
-    "stock": 3,
-    "used": 0,
+    "stock": 5,
+    "used": 2,
     "unit": "un.",
-    "ideal": 1,
-    "min": 2
+    "min": 1,
+    "ideal": 1
+  },
+  {
+    "cat": "DML",
+    "name": "Café",
+    "icon": "☕",
+    "stock": 17,
+    "used": 23,
+    "unit": "un.",
+    "min": 1,
+    "ideal": 17
   },
   {
     "cat": "DML",
@@ -904,8 +1637,8 @@ const baseProducts = [
     "stock": 2,
     "used": 0,
     "unit": "un.",
-    "ideal": 1,
-    "min": 1
+    "min": 1,
+    "ideal": 1
   },
   {
     "cat": "DML",
@@ -914,8 +1647,8 @@ const baseProducts = [
     "stock": 1,
     "used": 0,
     "unit": "cx.",
-    "ideal": 4,
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -924,18 +1657,18 @@ const baseProducts = [
     "stock": 2,
     "used": 0,
     "unit": "un.",
-    "ideal": 4,
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
     "name": "Desinfetante Diluído 5L",
     "icon": "🧪",
-    "stock": 23,
-    "used": 0,
+    "stock": 18,
+    "used": 5,
     "unit": "un.",
-    "ideal": 2,
-    "min": 1
+    "min": 1,
+    "ideal": 2
   },
   {
     "cat": "DML",
@@ -944,8 +1677,8 @@ const baseProducts = [
     "stock": 3,
     "used": 0,
     "unit": "un.",
-    "ideal": 1,
-    "min": 1
+    "min": 1,
+    "ideal": 1
   },
   {
     "cat": "DML",
@@ -954,8 +1687,8 @@ const baseProducts = [
     "stock": 33,
     "used": 0,
     "unit": "un.",
-    "ideal": 4,
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -964,8 +1697,8 @@ const baseProducts = [
     "stock": 1,
     "used": 0,
     "unit": "un.",
-    "ideal": 4,
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -974,8 +1707,8 @@ const baseProducts = [
     "stock": 1,
     "used": 0,
     "unit": "un.",
-    "ideal": 4,
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -984,18 +1717,8 @@ const baseProducts = [
     "stock": 2,
     "used": 0,
     "unit": "un.",
-    "ideal": 4,
-    "min": 1
-  },
-  {
-    "cat": "DML",
-    "name": "Esponja de Louça",
-    "icon": "🧽",
-    "stock": 1,
-    "used": 2,
-    "unit": "pct.",
-    "ideal": 4,
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -1004,8 +1727,8 @@ const baseProducts = [
     "stock": 1,
     "used": 0,
     "unit": "pct.",
-    "ideal": 4,
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -1014,8 +1737,8 @@ const baseProducts = [
     "stock": 5,
     "used": 0,
     "unit": "un.",
-    "ideal": 2,
-    "min": 2
+    "min": 1,
+    "ideal": 2
   },
   {
     "cat": "DML",
@@ -1024,8 +1747,8 @@ const baseProducts = [
     "stock": 2,
     "used": 0,
     "unit": "un.",
-    "ideal": 1,
-    "min": 1
+    "min": 1,
+    "ideal": 1
   },
   {
     "cat": "DML",
@@ -1034,8 +1757,8 @@ const baseProducts = [
     "stock": 1,
     "used": 0,
     "unit": "cx.",
-    "ideal": 1,
-    "min": 1
+    "min": 1,
+    "ideal": 1
   },
   {
     "cat": "DML",
@@ -1044,8 +1767,8 @@ const baseProducts = [
     "stock": 2,
     "used": 0,
     "unit": "un.",
-    "ideal": 4,
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -1054,48 +1777,38 @@ const baseProducts = [
     "stock": 15,
     "used": 0,
     "unit": "un.",
-    "ideal": 15,
-    "min": 4
+    "min": 1,
+    "ideal": 15
   },
   {
     "cat": "DML",
     "name": "Papel Higiênico ADM",
     "icon": "🧻",
-    "stock": 4,
-    "used": 0,
+    "stock": 8,
+    "used": 1,
     "unit": "un.",
-    "ideal": 2,
-    "min": 1
-  },
-  {
-    "cat": "DML",
-    "name": "Papel Higiênico do Aluno",
-    "icon": "🧻",
-    "stock": 23,
-    "used": 0,
-    "unit": "fardos",
-    "ideal": 4,
-    "min": 1
+    "min": 1,
+    "ideal": 2
   },
   {
     "cat": "DML",
     "name": "Papel Toalha",
     "icon": "🧻",
-    "stock": 15,
-    "used": 0,
+    "stock": 18,
+    "used": 12,
     "unit": "fardos",
-    "ideal": 2,
-    "min": 4
+    "min": 1,
+    "ideal": 2
   },
   {
     "cat": "DML",
     "name": "Rolo de Perflex",
     "icon": "🧻",
-    "stock": 1,
+    "stock": 2,
     "used": 0,
     "unit": "rolo",
-    "ideal": 4,
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -1104,8 +1817,8 @@ const baseProducts = [
     "stock": 1,
     "used": 0,
     "unit": "un.",
-    "ideal": 4,
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -1114,8 +1827,8 @@ const baseProducts = [
     "stock": 3,
     "used": 1,
     "unit": "un.",
-    "ideal": 3,
-    "min": 1
+    "min": 1,
+    "ideal": 3
   },
   {
     "cat": "DML",
@@ -1124,8 +1837,8 @@ const baseProducts = [
     "stock": 2,
     "used": 0,
     "unit": "pct.",
-    "ideal": 4,
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -1134,8 +1847,8 @@ const baseProducts = [
     "stock": 2,
     "used": 0,
     "unit": "un.",
-    "ideal": 2,
-    "min": 2
+    "min": 1,
+    "ideal": 2
   },
   {
     "cat": "DML",
@@ -1144,8 +1857,8 @@ const baseProducts = [
     "stock": 2,
     "used": 0,
     "unit": "pct.",
-    "ideal": 4,
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -1154,8 +1867,8 @@ const baseProducts = [
     "stock": 2,
     "used": 1,
     "unit": "un.",
-    "ideal": 4,
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -1164,8 +1877,8 @@ const baseProducts = [
     "stock": 2,
     "used": 0,
     "unit": "un.",
-    "ideal": 4,
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "DML",
@@ -1174,48 +1887,48 @@ const baseProducts = [
     "stock": 3,
     "used": 0,
     "unit": "un.",
-    "ideal": 4,
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "Sala de Reunião",
     "name": "Balas",
     "icon": "🍬",
-    "stock": 2,
-    "used": 0,
+    "stock": 1,
+    "used": 1,
     "unit": "pct.",
-    "ideal": 4,
-    "min": 2
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "Sala de Reunião",
     "name": "Bolachas",
     "icon": "🍪",
-    "stock": 1,
-    "used": 0,
+    "stock": 0,
+    "used": 1,
     "unit": "pct.",
-    "ideal": 4,
-    "min": 1
+    "min": 1,
+    "ideal": 4
   },
   {
     "cat": "Secretaria / Cozinha",
     "name": "Açúcar",
     "icon": "🍚",
-    "stock": 5,
-    "used": 0,
+    "stock": 15,
+    "used": 9,
     "unit": "kg",
-    "ideal": 5,
-    "min": 1
+    "min": 1,
+    "ideal": 5
   },
   {
     "cat": "Secretaria / Cozinha",
     "name": "Chá de Camomila",
     "icon": "🌼",
-    "stock": 10,
+    "stock": 19,
     "used": 0,
     "unit": "cx.",
-    "ideal": 10,
-    "min": 3
+    "min": 1,
+    "ideal": 10
   },
   {
     "cat": "Secretaria / Cozinha",
@@ -1224,8 +1937,8 @@ const baseProducts = [
     "stock": 10,
     "used": 0,
     "unit": "cx.",
-    "ideal": 10,
-    "min": 3
+    "min": 1,
+    "ideal": 10
   }
 ];const monthNames=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const currentDate=new Date();
@@ -1234,7 +1947,7 @@ let selectedYear=currentDate.getFullYear();
 let products=[];
 let editIndex=null;
 
-const inventoryVersion='v6-corrigido-icones-total177';
+const inventoryVersion='v12-card-compacto-nome-visivel';
 function inventoryVersionKey(){return `journey-inventory-version-${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}`;}
 
 
@@ -1326,11 +2039,7 @@ Digite um número manual ou deixe vazio para voltar ao cálculo automático.`, c
   setDashboardOverride(key,num);render();
 };
 function idealForProduct(p){return Number(p.ideal || (Number(p.stock||0)+Number(p.used||0)) || p.min || 4);}
-function officialStockTotal(){
-  // Total consolidado correto informado para Julho/2026.
-  if(selectedYear===2026 && selectedMonth===6) return 177;
-  return products.reduce((s,p)=>s+Number(p.stock||0),0);
-}
+function officialStockTotal(){return products.reduce((s,p)=>s+Number(p.stock||0),0);}
 function updateTopStats(){
   const total=products.length;
   const stock=officialStockTotal();
@@ -1371,10 +2080,38 @@ function render(){
       const tagClass=p.used>0?'':'stocked';
       const tagText=p.used>0?'Em uso':'Em estoque';
       html+=`<article class="card ${low?'low':''}" data-index="${p.index}">
-        <div class="icon-wrap"><div class="icon">${p.icon||iconFor(p.name)}</div><div class="ctrls"><button class="minus" onclick="useProduct(${p.index})">−</button><button class="plus" onclick="addStock(${p.index})">+</button></div><button class="edit-product" onclick="editProduct(${p.index})">edit</button></div>
-        <div><div class="name-row"><div><div class="name">${escHTML(p.name)}</div><div class="meta">Entrada: ${monthLabel()}<br>Categoria: ${escHTML(p.cat)}<br>Estoque mínimo: ${p.min} ${escHTML(p.unit)}<br>Estoque ideal: ${idealForProduct(p)} ${escHTML(p.unit)}</div></div><div class="card-actions"><span class="tag ${tagClass}">${tagText}</span><button class="delete-product" onclick="deleteProduct(${p.index})" aria-label="Excluir ${escHTML(p.name)}">×</button></div></div>
-        <div class="stock"><div class="box stock-now"><small>Em estoque</small><b>${p.stock}</b> ${escHTML(p.unit)}</div><div class="box used"><small>Utilizados</small><b>${p.used}</b> ${escHTML(p.unit)}</div></div>
-        <div class="bar"><div class="fill" style="width:${percent}%"></div></div><div class="meta">Saldo visual: ${p.stock} ${escHTML(p.unit)}</div><div class="alert">⚠ Estoque baixo! Reposição necessária.</div></div></article>`;
+        <div class="card-icon-column">
+          <div class="icon"><span class="icon-glyph">${p.icon||iconFor(p.name)}</span></div>
+          <div class="card-tools">
+            <button class="edit-product" onclick="editProduct(${p.index})">Editar</button>
+            <button class="delete-product" onclick="deleteProduct(${p.index})" aria-label="Excluir ${escHTML(p.name)}">×</button>
+          </div>
+        </div>
+        <div class="card-main">
+          <div class="name">${escHTML(p.name)}</div>
+          <div class="meta">Entrada: ${monthLabel()}<br>Categoria: ${escHTML(p.cat)}<br>Estoque mínimo: ${p.min} ${escHTML(p.unit)}<br>Estoque ideal: ${idealForProduct(p)} ${escHTML(p.unit)}</div>
+          <div class="stock">
+            <div class="box stock-now">
+              <small><span class="card-status-label">Estoque</span>E</small>
+              <div class="stock-value"><b aria-label="Quantidade em estoque">${Number(p.stock||0)}</b><em>${escHTML(p.unit)}</em></div>
+              <div class="quantity-controls">
+                <button onclick="useProduct(${p.index})" aria-label="Diminuir estoque">−</button>
+                <button onclick="addStock(${p.index})" aria-label="Aumentar estoque">+</button>
+              </div>
+            </div>
+            <div class="box used">
+              <small><span class="card-status-label">Utilizados</span>U</small>
+              <div class="stock-value"><b aria-label="Quantidade utilizada">${Number(p.used||0)}</b><em>${escHTML(p.unit)}</em></div>
+              <div class="quantity-controls">
+                <button onclick="undoProductUse(${p.index})" aria-label="Diminuir utilizados">−</button>
+                <button onclick="useProduct(${p.index})" aria-label="Aumentar utilizados">+</button>
+              </div>
+            </div>
+          </div>
+          <div class="bar"><div class="fill" style="width:${percent}%"></div></div>
+          <div class="alert">⚠ Estoque baixo! Reposição necessária.</div>
+        </div>
+      </article>`;
     });
   });
   const total=products.length,bought=products.reduce((s,p)=>s+p.stock+p.used,0),used=products.reduce((s,p)=>s+p.used,0);
@@ -1387,6 +2124,15 @@ function render(){
 
 window.useProduct=function(i){
   if(products[i] && products[i].stock>0){products[i].stock--;products[i].used++;logAction('RETIRADA',products[i],1);saveCurrentMonth();render();}
+};
+window.undoProductUse=function(i){
+  if(products[i] && Number(products[i].used||0)>0){
+    products[i].used--;
+    products[i].stock++;
+    logAction('AJUSTE UTILIZADOS',products[i],-1);
+    saveCurrentMonth();
+    render();
+  }
 };
 window.addStock=function(i){
   if(products[i]){products[i].stock++;logAction('ENTRADA',products[i],1);saveCurrentMonth();render();}
@@ -1430,7 +2176,16 @@ function resetProductForm(){
   productCat.value='DML';
   newCatField.classList.add('hidden');
 }
-function openModal(){resetProductForm();modal.classList.add('open');setTimeout(()=>document.getElementById('productName').focus(),120);}
+function openModal(){
+  resetProductForm();
+  modal.classList.add('open');
+  const sheet=modal.querySelector('.sheet');
+  if(sheet) sheet.scrollTop=0;
+  setTimeout(()=>{
+    const nameInput=document.getElementById('productName');
+    if(nameInput){nameInput.style.display='block';nameInput.focus();}
+  },120);
+}
 addBtn.onclick=openModal;
 scrollAdd.onclick=openModal;
 closeModal.onclick=()=>{modal.classList.remove('open');resetProductForm();};
@@ -1448,7 +2203,15 @@ document.getElementById('saveProduct').onclick=()=>{
   const ideal=parseInt(document.getElementById('productIdeal')?.value||String(Math.max(qty,min,4)),10);
   const unit=document.getElementById('productUnit').value;
   let cat=productCat.value==='nova'?document.getElementById('newCat').value.trim():productCat.value;
-  if(!name||qty<0||used<0||!cat)return;
+  if(!name){
+    const input=document.getElementById('productName');
+    input?.focus();
+    input?.setCustomValidity('Informe o nome do produto.');
+    input?.reportValidity();
+    setTimeout(()=>input?.setCustomValidity(''),100);
+    return;
+  }
+  if(qty<0||used<0||!cat)return;
   ensureCategoryOption(cat);
 
   if(editIndex!==null && products[editIndex]){
