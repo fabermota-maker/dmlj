@@ -1430,6 +1430,79 @@ html,body{
   box-shadow:0 0 0 2px rgba(32,205,188,.12)!important;
 }
 
+
+/* ===== v13: número e unidade centralizados ===== */
+.stock .box{
+  grid-template-columns:minmax(0,1fr) 28px!important;
+  grid-template-rows:14px minmax(0,1fr)!important;
+  column-gap:7px!important;
+}
+.stock-value{
+  grid-column:1!important;
+  grid-row:2!important;
+  width:100%!important;
+  min-width:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  overflow:hidden!important;
+}
+.stock-value b{
+  display:block!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  text-align:center!important;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  line-height:.9!important;
+}
+.stock-value em{
+  display:block!important;
+  width:100%!important;
+  margin:5px 0 0!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+}
+.quantity-controls{
+  grid-column:2!important;
+  grid-row:2!important;
+  width:28px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:5px!important;
+}
+.quantity-controls button{
+  width:26px!important;
+  min-width:26px!important;
+  height:26px!important;
+  min-height:26px!important;
+  flex:0 0 26px!important;
+  margin:0!important;
+  padding:0!important;
+}
+@media(max-width:360px){
+  .stock .box{
+    grid-template-columns:minmax(0,1fr) 25px!important;
+    column-gap:4px!important;
+  }
+  .quantity-controls{
+    width:25px!important;
+  }
+  .quantity-controls button{
+    width:23px!important;
+    min-width:23px!important;
+    height:23px!important;
+    min-height:23px!important;
+    flex-basis:23px!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1947,7 +2020,7 @@ let selectedYear=currentDate.getFullYear();
 let products=[];
 let editIndex=null;
 
-const inventoryVersion='v12-card-compacto-nome-visivel';
+const inventoryVersion='v13-pwa-completo-centralizado';
 function inventoryVersionKey(){return `journey-inventory-version-${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}`;}
 
 
